@@ -10,7 +10,7 @@
   --ink: #0B1026;
   --ink2: #151C40;
   --line: #27315F;
-  --paper: #EEF1F8;
+  --paper: #CBD0E9;
   --card: #FBFCFF;
   --moon: #E8ECF7;
   --mute: #B4BEDD;
@@ -227,70 +227,65 @@ h3 { font-size: 36px; font-weight: 700; line-height: 1.15; }
 </head>
 <body>
 <div class="deck">
-<section id="cover" class="cover" data-transition="fade">
+<section id="cover" class="cover" data-transition="fade" style="background:linear-gradient(rgba(11,16,38,0.5),rgba(11,16,38,0.5)),url(assets/bg-nebula.jpg) center/cover">
 <svg class="stars" aria-label="Starfield with the Moon and a small Earth" width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
 <defs><radialGradient id="mars" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#F6F8FC"/><stop offset="0.45" stop-color="#A8AFC4"/><stop offset="1" stop-color="#2C324A"/></radialGradient><radialGradient id="earth" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#9FD3FF"/><stop offset="0.55" stop-color="#2F7FE0"/><stop offset="1" stop-color="#0E2A66"/></radialGradient></defs>
-<g fill="#E8ECF7">
-<circle cx="120" cy="90" r="2" opacity="0.8"/><circle cx="310" cy="210" r="1.5" opacity="0.5"/><circle cx="520" cy="70" r="2.5" opacity="0.9"/><circle cx="760" cy="160" r="1.5" opacity="0.6"/><circle cx="980" cy="60" r="2" opacity="0.7"/><circle cx="1210" cy="190" r="1.5" opacity="0.5"/><circle cx="1440" cy="80" r="2.5" opacity="0.9"/><circle cx="1650" cy="230" r="1.5" opacity="0.6"/><circle cx="1840" cy="110" r="2" opacity="0.8"/><circle cx="90" cy="420" r="1.5" opacity="0.5"/><circle cx="260" cy="560" r="2" opacity="0.7"/><circle cx="430" cy="380" r="1.5" opacity="0.4"/><circle cx="640" cy="610" r="1.5" opacity="0.6"/><circle cx="880" cy="470" r="2" opacity="0.7"/><circle cx="1100" cy="560" r="1.5" opacity="0.5"/><circle cx="1330" cy="420" r="2" opacity="0.8"/><circle cx="1780" cy="450" r="2" opacity="0.6"/><circle cx="180" cy="800" r="2" opacity="0.7"/><circle cx="400" cy="920" r="1.5" opacity="0.5"/><circle cx="620" cy="860" r="2" opacity="0.6"/><circle cx="850" cy="990" r="1.5" opacity="0.5"/><circle cx="1060" cy="830" r="2" opacity="0.7"/><circle cx="60" cy="1020" r="1.5" opacity="0.5"/><circle cx="700" cy="300" r="1" opacity="0.6"/><circle cx="300" cy="700" r="1" opacity="0.6"/><circle cx="1000" cy="350" r="1" opacity="0.6"/>
-</g>
 <ellipse cx="1560" cy="840" rx="640" ry="140" fill="none" stroke="#FF7A3D" stroke-opacity="0.35" stroke-width="2" transform="rotate(-14 1560 840)"/>
 <circle cx="1560" cy="840" r="380" fill="url(#mars)"/>
 <circle cx="1440" cy="700" r="46" fill="#2C324A" opacity="0.35"/><circle cx="1660" cy="930" r="70" fill="#2C324A" opacity="0.3"/><circle cx="1720" cy="720" r="28" fill="#2C324A" opacity="0.35"/>
 <circle cx="1360" cy="900" r="22" fill="#2C324A" opacity="0.25"/>
 <circle cx="980" cy="1000" r="34" fill="url(#earth)"/>
 </svg>
+<img src="assets/logo-astra.png" alt="Astra Systems logo" style="position:absolute;top:110px;right:128px;width:528px">
 <div class="cover-body">
 <p class="eyebrow rise" style="--i:0">NASA SPACE APPS CHALLENGE · DNIPRO 2026</p>
-<h1 class="rise" style="--i:1">[TEAM NAME]</h1>
-<p class="sub rise" style="--i:2">Lunar Ops — a mission-control game where kids keep a Moon base crew alive</p>
+<h1 class="rise" style="--i:1">Astra Systems</h1>
+<p class="sub rise" style="--i:2">Lunar Ops — a browser-based lunar survival and science simulator</p>
 <p class="pill rise" style="--i:3">CHALLENGE: BUILD A JUNIOR ASTRONAUT MISSION TRAINER</p>
 </div>
 <div class="cover-meta rise" style="--i:4">
 <p>Separated Structural Subdivision «Applied Rocket-and-Space Engineering College of Oles Honchar Dnipro National University»</p>
-<p class="contact">[team@email.com] · github.com/aleexxeyy/lunar-ops</p>
+<p class="contact">https://github.com/aleexxeyy/lunar-ops</p>
 </div>
-<aside>Титульный слайд: название команды, проекта, выбранный челлендж и контакты (мануал просит контакты на первом слайде). Заменить [TEAM NAME] и почту.</aside>
+<aside>Титульный слайд: команда Astra Systems, проект Lunar Ops, челлендж, колледж и ссылка на репозиторий. Фон — космос из правок команды, Луна и Земля нарисованы SVG.</aside>
 </section>
 <section id="mission" class="light" data-transition="fade">
 <div class="head rise" style="--i:0">
 <p class="eyebrow">01 // MISSION BRIEFING</p>
-<h2>Learning the trade-offs of survival</h2>
+<h2>Learn to lead a lunar mission</h2>
 </div>
 <div class="row">
 <div class="card rise" style="--i:1">
 <p class="tag">THE PROBLEM</p>
-<p class="body">Space lessons for kids are either flat facts on a poster or too technical to follow. Students see how a mission ends — never the decisions behind it.</p>
+<p class="body">Space education often shows facts, not the decisions behind them. Lunar Ops turns limited supplies, crew safety and scientific goals into a mission students can manage.</p>
 </div>
-<div class="card dark rise" style="--i:2">
+<div class="card dark rise" style="--i:2;background:url(assets/card-stars.jpg) center/cover">
 <p class="tag">OUR MISSION</p>
-<p class="body">Lunar Ops puts the player in command of Horizon base on the Moon. Keep three astronauts safe, finish the science program — and learn that no choice is free.</p>
+<p class="body">Lunar Ops is a browser-based Moon mission simulator. Keep your crew safe for 7 days and collect 60 science points while balancing resources and tough decisions.</p>
 </div>
 </div>
 <div class="stats">
-<div class="stat rise" style="--i:3"><p class="num">7</p><p class="lbl">days on the Moon to survive</p></div>
+<div class="stat rise" style="--i:3"><p class="num">7</p><p class="lbl">days to complete the mission</p></div>
 <div class="stat rise" style="--i:4"><p class="num">4</p><p class="lbl">resources: energy, oxygen, water, morale</p></div>
-<div class="stat rise" style="--i:5"><p class="num">60</p><p class="lbl">science points to complete the mission</p></div>
+<div class="stat rise" style="--i:5"><p class="num">2</p><p class="lbl">operations available each day</p></div>
 </div>
 <div class="foot"><p>NASA SPACE APPS · DNIPRO 2026</p><p>02 / 07</p></div>
-<aside>Проблема и цель. Цифры — из game-config: 7 игровых дней, 4 ресурса, цель 60 научных данных, экипаж из 3 человек. Аудитория — дети 7–12 лет (условие челленджа).</aside>
+<aside>Проблема и цель. Цифры — из game-config: 7 игровых дней, 4 ресурса, 2 операции в день; цель — 60 научных данных. Аудитория — дети 7–12 лет (условие челленджа).</aside>
 </section>
-<section id="how" data-transition="fade">
+<section id="how" data-transition="fade" style="background:linear-gradient(rgba(11,16,38,0.62),rgba(11,16,38,0.62)),url(assets/bg-nebula.jpg) center/cover">
 <svg class="stars" aria-label="Starfield" width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
-<g fill="#E8ECF7">
-<circle cx="120" cy="90" r="2" opacity="0.6"/><circle cx="520" cy="70" r="2" opacity="0.7"/><circle cx="980" cy="60" r="1.5" opacity="0.5"/><circle cx="1440" cy="80" r="2" opacity="0.7"/><circle cx="1840" cy="110" r="1.5" opacity="0.6"/><circle cx="1880" cy="420" r="1.5" opacity="0.5"/><circle cx="1860" cy="760" r="2" opacity="0.6"/><circle cx="60" cy="1020" r="1.5" opacity="0.5"/><circle cx="900" cy="1030" r="1.5" opacity="0.5"/><circle cx="1500" cy="1040" r="2" opacity="0.6"/><circle cx="40" cy="560" r="1.5" opacity="0.5"/>
-</g>
 </svg>
 <div class="head rise" style="--i:0">
 <p class="eyebrow">02 // HOW IT WORKS</p>
-<h2>Every day is a trade-off</h2>
+<h2>Every lunar day is a trade-off</h2>
 </div>
 <div class="split">
 <div class="steps">
-<div class="step rise" style="--i:1"><p class="dot">1</p><div class="step-text"><h3>Check the base</h3><p>Energy, oxygen, water and morale drop every day — see the forecast.</p></div></div>
-<div class="step rise" style="--i:2"><p class="dot">2</p><div class="step-text"><h3>Spend 2 operations</h3><p>Research, make oxygen, recycle water, rest or upgrade a module.</p></div></div>
-<div class="step rise" style="--i:3"><p class="dot">3</p><div class="step-text"><h3>Face an event</h3><p>Solar storm, air leak, ice signal: two answers, each has a price.</p></div></div>
-<div class="step rise" style="--i:4"><p class="dot">4</p><div class="step-text"><h3>End the day</h3><p>Modules produce, roles give bonuses, a short lesson explains why.</p></div></div>
-<p class="tagline rise" style="--i:5">Shield the crew from a storm → less energy for research</p>
+<div class="step rise" style="--i:1"><p class="dot">1</p><div class="step-text"><h3>Briefing</h3><p>Review telemetry, crew health, resources and the forecast.</p></div></div>
+<div class="step rise" style="--i:2"><p class="dot">2</p><div class="step-text"><h3>Plan</h3><p>Up to two operations: research, oxygen, water, rest or an upgrade.</p></div></div>
+<div class="step rise" style="--i:3"><p class="dot">3</p><div class="step-text"><h3>Event</h3><p>A solar storm, an air leak or a possible ice discovery.</p></div></div>
+<div class="step rise" style="--i:4"><p class="dot">4</p><div class="step-text"><h3>Debrief</h3><p>See resource changes, science progress and the mission log.</p></div></div>
+<p class="tagline rise" style="--i:5">Gain science today → manage fewer resources tomorrow</p>
 </div>
 <figure class="hud rise" style="--i:2;padding:0;overflow:hidden;margin:0">
 <img src="screenshots/shot-event.png" alt="Solar storm event in the Lunar Ops prototype" style="display:block;width:100%;height:auto">
@@ -311,28 +306,28 @@ h3 { font-size: 36px; font-weight: 700; line-height: 1.15; }
 <img src="screenshots/shot-mobile.png" alt="Lunar Ops on a phone" style="position:absolute;right:-40px;bottom:-90px;width:190px;border:8px solid #0B1026;border-radius:24px">
 </div>
 <div class="features">
-<div class="feat rise" style="--i:2"><div class="ic"><x-icon name="Globe"></x-icon></div><div class="feat-text"><h3>Free, in any browser</h3><p>No download, no account. Adapts to school computers and phones.</p></div></div>
-<div class="feat rise" style="--i:3"><div class="ic"><x-icon name="Book"></x-icon></div><div class="feat-text"><h3>Cadet or Commander</h3><p>Two difficulty levels: Commander burns resources 35% faster.</p></div></div>
-<div class="feat rise" style="--i:4"><div class="ic"><x-icon name="Activity"></x-icon></div><div class="feat-text"><h3>Learn by deciding</h3><p>Every event ends with a short lesson on real lunar science.</p></div></div>
+<div class="feat rise" style="--i:2"><div class="ic"><x-icon name="Globe"></x-icon></div><div class="feat-text"><h3>Accessible in your browser</h3><p>No account or installation. A web client talks to the mission API.</p></div></div>
+<div class="feat rise" style="--i:3"><div class="ic"><x-icon name="Book"></x-icon></div><div class="feat-text"><h3>Mission command center</h3><p>Track four resources, crew health, station modules and science.</p></div></div>
+<div class="feat rise" style="--i:4"><div class="ic"><x-icon name="Activity"></x-icon></div><div class="feat-text"><h3>Replay and improve</h3><p>Two difficulty levels, event choices and JSON mission logs.</p></div></div>
 </div>
 </div>
 <div class="foot"><p>NASA SPACE APPS · DNIPRO 2026</p><p>04 / 07</p></div>
 <aside>Визуализация проекта + пользовательский опыт. Скриншоты рабочего прототипа (desktop и телефон). Интерфейс игры пока на русском — к финалу переснять с английской версией. Все скриншоты — в папке screenshots/.</aside>
 </section>
-<section id="data" data-transition="fade">
+<section id="data" data-transition="fade" style="background:linear-gradient(rgba(11,16,38,0.62),rgba(11,16,38,0.62)),url(assets/bg-nebula.jpg) center/cover">
 <div class="head rise" style="--i:0">
 <p class="eyebrow">04 // NASA SCIENCE</p>
-<h2>Real science behind every event</h2>
+<h2>Science-inspired scenarios, clearly labeled</h2>
 </div>
 <table class="data-table rise" style="--i:1">
-<tr><th style="width:22%">In the game</th><th style="width:48%">What the player learns</th><th style="width:30%">NASA / partner source</th></tr>
-<tr><td>Solar storm · day 2</td><td>The Moon has almost no atmosphere or magnetic field — shelters and space-weather forecasts cut radiation risk</td><td>NASA DONKI — solar flares, CMEs</td></tr>
-<tr><td>Air leak · day 4</td><td>Sealed modules isolate a leak; pressure control and reserves keep the crew alive</td><td>NASA OSDR — crew health in space</td></tr>
-<tr><td>Ice signal · day 6</td><td>Water ice may survive in permanently shadowed craters near the lunar poles</td><td>NASA Moon Trek — lunar south pole</td></tr>
-<tr><td>Hydroponics module</td><td>A greenhouse returns water and lifts crew morale in a closed habitat</td><td>CSA — food production in space</td></tr>
-<tr><td>Crew health</td><td>Low supplies hurt the crew; the medic role and rest restore health</td><td>RadLab (OSDR) — radiation dose</td></tr>
+<tr><th style="width:24%">Current scenario</th><th style="width:40%">Scientific context</th><th style="width:36%">Status in the game</th></tr>
+<tr><td>Solar storm</td><td>Charged particles and lunar radiation risk</td><td>Playable event: shield or shelter</td></tr>
+<tr><td>Air leak</td><td>Habitat pressure and oxygen safety</td><td>Playable event: repair or isolate</td></tr>
+<tr><td>Possible lunar ice</td><td>Water ice in permanently shadowed regions</td><td>Playable event: explore or scan</td></tr>
+<tr><td>Station systems</td><td>Solar power and life-support trade-offs</td><td>Upgradable modules and daily forecast</td></tr>
+<tr><td>Science progress</td><td>Research, mission goals and crew decisions</td><td>7 days; target: 60 science points</td></tr>
 </table>
-<p class="note rise" style="--i:2">Today the numbers are a simplified teaching model. Next step: live space weather from NASA DONKI through our own API, so a real solar flare triggers the in-game storm.</p>
+<p class="note rise" style="--i:2">Current events and resource values are educational simulations, not live NASA feeds.<br>References: NASA DONKI (space weather) · NASA OSDR &amp; RadLab (crew health, radiation) · NASA Moon Trek (lunar poles) · CSA (food in space)</p>
 <div class="foot"><p>NASA SPACE APPS · DNIPRO 2026</p><p>05 / 07</p></div>
 <aside>Честно: в коде пока нет живых данных NASA (README игры: «условная учебная модель»). Уроки в событиях основаны на научных фактах; колонка источников — к чему привязываем факты и что подключим. Если успеем подключить DONKI через apps/api — переписать нижнюю строку.</aside>
 </section>
@@ -340,40 +335,37 @@ h3 { font-size: 36px; font-weight: 700; line-height: 1.15; }
 <div class="head rise" style="--i:0">
 <p class="eyebrow">05 // CREW</p>
 <h2>Meet the crew</h2>
+<p style="font-size:24px;color:#46507A;margin-top:8px">Students of the Applied Rocket-and-Space Engineering College, Dnipro · web development, UI/UX, game mechanics, NASA open data</p>
 </div>
 <div class="crew-row">
-<div class="member rise" style="--i:1"><div class="avatar"><x-icon name="Users"></x-icon></div><p class="name">[Name Surname]</p><p class="role">[Team lead]</p></div>
-<div class="member rise" style="--i:2"><div class="avatar"><x-icon name="Users"></x-icon></div><p class="name">[Name Surname]</p><p class="role">[Role]</p></div>
-<div class="member rise" style="--i:3"><div class="avatar"><x-icon name="Users"></x-icon></div><p class="name">[Name Surname]</p><p class="role">[Role]</p></div>
-<div class="member rise" style="--i:4"><div class="avatar"><x-icon name="Users"></x-icon></div><p class="name">[Name Surname]</p><p class="role">[Role]</p></div>
-<div class="member rise" style="--i:5"><div class="avatar"><x-icon name="Users"></x-icon></div><p class="name">[Name Surname]</p><p class="role">[Role]</p></div>
-<div class="member rise" style="--i:6"><div class="avatar"><x-icon name="Users"></x-icon></div><p class="name">[Name Surname]</p><p class="role">[Role]</p></div>
+<div class="member rise" style="--i:1"><div class="avatar" style="padding:0;overflow:hidden"><img src="assets/team-olexii.jpg" alt="Olexii Tkachov" style="width:100%;height:100%;object-fit:cover"></div><p class="name">Olexii Tkachov</p><p class="role">Team lead, software engineer</p></div>
+<div class="member rise" style="--i:2"><div class="avatar" style="padding:0;overflow:hidden"><img src="assets/team-vladislav.jpg" alt="Vladislav Shatohin" style="width:100%;height:100%;object-fit:cover"></div><p class="name">Vladislav Shatohin</p><p class="role">Software engineer</p></div>
+<div class="member rise" style="--i:3"><div class="avatar" style="padding:0;overflow:hidden"><img src="assets/team-yelizaveta.jpg" alt="Yelizaveta Lebidieva" style="width:100%;height:100%;object-fit:cover"></div><p class="name">Yelizaveta Lebidieva</p><p class="role">Graphic designer</p></div>
+<div class="member rise" style="--i:4"><div class="avatar" style="padding:0;overflow:hidden"><img src="assets/team-kirilo.jpg" alt="Kirilo Sidoruk" style="width:100%;height:100%;object-fit:cover"></div><p class="name">Kirilo Sidoruk</p><p class="role">Presentation designer</p></div>
+<div class="member rise" style="--i:5"><div class="avatar" style="padding:0;overflow:hidden"><img src="assets/team-tetiana.jpg" alt="Tetiana Mandryka" style="width:100%;height:100%;object-fit:cover"></div><p class="name">Tetiana Mandryka</p><p class="role">Presentation designer assistant</p></div>
 </div>
 <div class="foot"><p>NASA SPACE APPS · DNIPRO 2026</p><p>06 / 07</p></div>
-<aside>Команда: заменить заглушки фото, имена и роли. Лишние карточки можно удалить — остальные растянутся.</aside>
+<aside>Команда Astra Systems (страница команды на spaceappschallenge.org): Олексій Ткачов — лид, Владислав Шатохін, Єлизавета Лебідєва, Кирило Сидорук, Тетяна Мандрика. Стек: TypeScript, React, NestJS.</aside>
 </section>
-<section id="next">
+<section id="next" style="background:linear-gradient(rgba(11,16,38,0.62),rgba(11,16,38,0.62)),url(assets/bg-nebula.jpg) center/cover">
 <svg class="stars" aria-label="Starfield with a small Moon" width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
 <defs><radialGradient id="mars2" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#F6F8FC"/><stop offset="0.45" stop-color="#A8AFC4"/><stop offset="1" stop-color="#2C324A"/></radialGradient></defs>
-<g fill="#E8ECF7">
-<circle cx="120" cy="90" r="2" opacity="0.6"/><circle cx="520" cy="70" r="2" opacity="0.7"/><circle cx="980" cy="60" r="1.5" opacity="0.5"/><circle cx="1240" cy="140" r="2" opacity="0.7"/><circle cx="60" cy="1020" r="1.5" opacity="0.5"/><circle cx="900" cy="1030" r="1.5" opacity="0.5"/><circle cx="1500" cy="1040" r="2" opacity="0.6"/><circle cx="40" cy="560" r="1.5" opacity="0.5"/><circle cx="1880" cy="700" r="1.5" opacity="0.6"/>
-</g>
 <circle cx="1760" cy="150" r="200" fill="url(#mars2)"/>
 </svg>
 <div class="head rise" style="--i:0">
 <p class="eyebrow">06 // NEXT MISSION</p>
-<h2>Further plans</h2>
+<h2>Our next steps</h2>
 </div>
 <div class="plans">
-<div class="plan rise" style="--i:1"><p class="tag">TEST</p><p class="body">Playtest with kids at schools and clubs in Dnipro and collect feedback.</p></div>
-<div class="plan rise" style="--i:2"><p class="tag">UPGRADE</p><p class="body">Live NASA DONKI space weather in the game, more events and base modules.</p></div>
-<div class="plan rise" style="--i:3"><p class="tag">IMPLEMENT</p><p class="body">English version of the interface and a classroom mode for teachers.</p></div>
+<div class="plan rise" style="--i:1"><p class="tag">TEST</p><p class="body">Run classroom playtests with students and teachers; gather feedback on clarity and difficulty.</p></div>
+<div class="plan rise" style="--i:2"><p class="tag">UPGRADE</p><p class="body">Expand mission scenarios and add sourced NASA datasets (DONKI first) with in-game credits.</p></div>
+<div class="plan rise" style="--i:3"><p class="tag">IMPLEMENT</p><p class="body">An English interface, a teacher-friendly classroom mode and better mobile accessibility.</p></div>
 </div>
 <div class="thanks rise" style="--i:4">
 <h2>Thanks for listening!</h2>
-<p class="sources">Sources: NASA DONKI · NASA OSDR · RadLab · NASA Moon Trek · CSA Space Resources · github.com/aleexxeyy/lunar-ops</p>
+<p class="sources">Astra Systems · Project: github.com/aleexxeyy/lunar-ops · Current events use simulated data</p>
 </div>
-<div class="foot"><p>[team@email.com]</p><p>07 / 07</p></div>
+<div class="foot"><p>github.com/aleexxeyy/lunar-ops</p><p>07 / 07</p></div>
 <aside>Планы (Test / Upgrade / Implement, как в прошлой презентации), источники и благодарность. Лимит мануала: максимум 7 слайдов на английском — это последний.</aside>
 </section>
 </div>

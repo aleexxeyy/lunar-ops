@@ -1,17 +1,17 @@
-<section id="data" data-transition="fade">
+<section id="data" data-transition="fade" style="background:linear-gradient(rgba(11,16,38,0.62),rgba(11,16,38,0.62)),url(assets/bg-nebula.jpg) center/cover">
 <div class="head rise" style="--i:0">
 <p class="eyebrow">04 // NASA SCIENCE</p>
-<h2>Real science behind every event</h2>
+<h2>Science-inspired scenarios, clearly labeled</h2>
 </div>
 <table class="data-table rise" style="--i:1">
-<tr><th style="width:22%">In the game</th><th style="width:48%">What the player learns</th><th style="width:30%">NASA / partner source</th></tr>
-<tr><td>Solar storm · day 2</td><td>The Moon has almost no atmosphere or magnetic field — shelters and space-weather forecasts cut radiation risk</td><td>NASA DONKI — solar flares, CMEs</td></tr>
-<tr><td>Air leak · day 4</td><td>Sealed modules isolate a leak; pressure control and reserves keep the crew alive</td><td>NASA OSDR — crew health in space</td></tr>
-<tr><td>Ice signal · day 6</td><td>Water ice may survive in permanently shadowed craters near the lunar poles</td><td>NASA Moon Trek — lunar south pole</td></tr>
-<tr><td>Hydroponics module</td><td>A greenhouse returns water and lifts crew morale in a closed habitat</td><td>CSA — food production in space</td></tr>
-<tr><td>Crew health</td><td>Low supplies hurt the crew; the medic role and rest restore health</td><td>RadLab (OSDR) — radiation dose</td></tr>
+<tr><th style="width:24%">Current scenario</th><th style="width:40%">Scientific context</th><th style="width:36%">Status in the game</th></tr>
+<tr><td>Solar storm</td><td>Charged particles and lunar radiation risk</td><td>Playable event: shield or shelter</td></tr>
+<tr><td>Air leak</td><td>Habitat pressure and oxygen safety</td><td>Playable event: repair or isolate</td></tr>
+<tr><td>Possible lunar ice</td><td>Water ice in permanently shadowed regions</td><td>Playable event: explore or scan</td></tr>
+<tr><td>Station systems</td><td>Solar power and life-support trade-offs</td><td>Upgradable modules and daily forecast</td></tr>
+<tr><td>Science progress</td><td>Research, mission goals and crew decisions</td><td>7 days; target: 60 science points</td></tr>
 </table>
-<p class="note rise" style="--i:2">Today the numbers are a simplified teaching model. Next step: live space weather from NASA DONKI through our own API, so a real solar flare triggers the in-game storm.</p>
+<p class="note rise" style="--i:2">Current events and resource values are educational simulations, not live NASA feeds.<br>References: NASA DONKI (space weather) · NASA OSDR &amp; RadLab (crew health, radiation) · NASA Moon Trek (lunar poles) · CSA (food in space)</p>
 <div class="foot"><p>NASA SPACE APPS · DNIPRO 2026</p><p>05 / 07</p></div>
 <aside>Честно: в коде пока нет живых данных NASA (README игры: «условная учебная модель»). Уроки в событиях основаны на научных фактах; колонка источников — к чему привязываем факты и что подключим. Если успеем подключить DONKI через apps/api — переписать нижнюю строку.</aside>
 </section>
