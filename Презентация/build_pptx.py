@@ -333,7 +333,7 @@ text(s, 128, 800, 940, 44, "Gain science today → manage fewer resources tomorr
 box(s, 1108, 296, 688, 572, INK2, line=LINE, line_w=1.5, radius=20)
 pic = s.shapes.add_picture(str(SHOT_EVENT), E(1112), E(300), E(680), E(565))
 pic.name = "Screenshot: solar storm event"
-text(s, 1112, 880, 680, 30, "Day 2 event in the working prototype", 22, MUTE, MONO, align=PP_ALIGN.CENTER)
+text(s, 1112, 880, 680, 30, "Day 2 event in the working prototype · UA interface", 22, MUTE, MONO, align=PP_ALIGN.CENTER)
 footer(s, FOOT, "03 / 07", False)
 notes(s, "Игровой цикл одного дня (Briefing → Plan → Event → Debrief). Справа — реальный скриншот события "
          "«Солнечная буря» (день 2). Расход в день: энергия −18, кислород −14, вода −12, мораль −6 "
@@ -348,7 +348,7 @@ pic.name = "Screenshot: mission dashboard"
 box(s, 868, 476, 204, 424, INK, radius=24)
 pic = s.shapes.add_picture(str(SHOT_MOBILE), E(876), E(484), E(188), E(408))
 pic.name = "Screenshot: mobile"
-text(s, 128, 836, 720, 30, "Lunar Ops — playable web prototype", 22, MUTE_L, MONO)
+text(s, 128, 836, 720, 30, "Lunar Ops — playable web prototype · Ukrainian interface", 22, MUTE_L, MONO)
 feats = [("www", "Accessible in your browser", "No account or installation. A web client talks to the mission API."),
          ("Aa", "Mission command center", "Track four resources, crew health, station modules and science."),
          ("↻", "Replay and improve", "Two difficulty levels, event choices and JSON mission logs.")]
@@ -359,7 +359,7 @@ for i, (g, t, b) in enumerate(feats):
     text(s, 1216, y + 46, 576, 80, b, 26, MUTE_L, line=1.1)
 footer(s, FOOT, "04 / 07", True)
 notes(s, "Визуализация проекта + пользовательский опыт. Скриншоты рабочего прототипа (desktop и телефон). "
-         "Интерфейс игры пока на русском — к финалу переснять с английской версией. Все скриншоты — screenshots/.")
+         "Интерфейс игры на украинском (коммит 8bdd6f1). Все скриншоты — screenshots/.")
 
 # ---------- 5. data ----------
 s = space_slide()
