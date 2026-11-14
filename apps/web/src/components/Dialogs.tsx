@@ -1,12 +1,25 @@
 import { useEffect, useRef, useState } from "react";
 import type { CrewRole, Difficulty } from "@lunar-ops/contracts";
-import { useMission } from "../store";
+import { commandsBlocked, useMission } from "../store";
 import { Icon } from "./Icon";
 import { ResourceChart, resourceLabels } from "./Telemetry";
+import { ResourceActions } from "./ResourceActions";
 
 export function Dialogs() {
-  const { dialog, openDialog, mission, config, busy, start, send, error } =
-    useMission();
+  const {
+    dialog,
+    openDialog,
+    mission,
+    config,
+    busy,
+    start,
+    send,
+    error,
+    connection,
+    initialize,
+    clearError,
+  } = useMission();
+  const blocked = useMission(commandsBlocked);
   const ref = useRef<HTMLDialogElement>(null);
   const [difficulty, setDifficulty] = useState<Difficulty>("cadet");
   useEffect(() => {
@@ -117,6 +130,7 @@ export function Dialogs() {
                   key={key}
                   onClick={() => setDifficulty(key)}
                   aria-pressed={difficulty === key}
+                  disabled={busy}
                 >
                   <span>
                     <strong>{config.difficulties[key].name}</strong>
@@ -157,6 +171,7 @@ export function Dialogs() {
               График показывает запас при посадке и на конец каждого
               завершённого дня.
             </p>
+            <ResourceActions resource={dialog.resource} />
           </>
         )}
         {dialog?.type === "crew" && member && (
@@ -171,7 +186,9 @@ export function Dialogs() {
                   key={role}
                   className={member.role === role ? "selected" : ""}
                   disabled={
-                    busy || !mission.canAssign.available || member.role === role
+                    blocked ||
+                    !mission.canAssign.available ||
+                    member.role === role
                   }
                   onClick={() =>
                     void send({ type: "assign", crewId: member.id, role })
@@ -199,7 +216,7 @@ export function Dialogs() {
             </p>
             <button
               className="button primary full-width"
-              disabled={busy || !mission.upgrades[module.id].available}
+              disabled={blocked || !mission.upgrades[module.id].available}
               onClick={() =>
                 void send({ type: "upgrade", moduleId: module.id })
               }
@@ -213,9 +230,18 @@ export function Dialogs() {
           </>
         )}
         {error && (
-          <p className="dialog-error" role="alert">
-            {error}
-          </p>
+          <div className="dialog-error" role="alert">
+            <p>{error}</p>
+            <button
+              className="button secondary"
+              disabled={busy}
+              onClick={() =>
+                connection === "offline" ? void initialize() : clearError()
+              }
+            >
+              {connection === "offline" ? "Переподключить" : "Понятно"}
+            </button>
+          </div>
         )}
       </div>
     </dialog>

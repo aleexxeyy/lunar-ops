@@ -12,6 +12,73 @@ const fresh = () => createMission("test", "cadet");
 const advance = (state: MissionState) =>
   executeCommand(state, { type: "advance" });
 describe("mission simulation", () => {
+  it("rejects resource operations that cannot restore anything", () => {
+    const state = fresh();
+    state.resources.water = 100;
+    const snapshot = JSON.stringify(state);
+    expect(getMissionView(state).availableActions.water.available).toBe(false);
+    expect(() =>
+      executeCommand(state, { type: "action", actionId: "water" }),
+    ).toThrow("Восстановление не требуется");
+    expect(JSON.stringify(state)).toBe(snapshot);
+  });
+  it("allows rest with full morale when a crew member still needs healing", () => {
+    const state = fresh();
+    state.resources.morale = 100;
+    expect(getMissionView(state).availableActions.rest.available).toBe(false);
+    state.crew[0]!.health = 50;
+    expect(getMissionView(state).availableActions.rest.available).toBe(true);
+    expect(
+      executeCommand(state, { type: "action", actionId: "rest" }).crew[0]!
+        .health,
+    ).toBe(62);
+  });
+  it.each(config.modules)(
+    "upgrades $id and updates its production",
+    (module) => {
+      const state = fresh();
+      const next = executeCommand(state, {
+        type: "upgrade",
+        moduleId: module.id,
+      });
+      expect(next.modules[module.id]).toBe(2);
+      expect(next.parts).toBe(state.parts - config.upgrade.baseCost);
+      for (const [key, amount] of Object.entries(module.production)) {
+        expect(next.resources).toBeDefined();
+        expect(
+          dailyForecast(next)[key as keyof typeof next.resources] -
+            dailyForecast(state)[key as keyof typeof state.resources],
+        ).toBe(amount);
+      }
+    },
+  );
+  it.each(
+    config.events.flatMap((event) =>
+      event.choices.map((choice) => ({ event, choice })),
+    ),
+  )("resolves $event.id / $choice.id exactly once", ({ event, choice }) => {
+    const state = fresh();
+    state.pendingEvent = event;
+    state.day = event.day;
+    state.science = 40;
+    const next = executeCommand(state, {
+      type: "resolve",
+      choiceId: choice.id,
+    });
+    expect(next.science).toBe(40 + (choice.effect.science ?? 0));
+    expect(next.parts).toBe(state.parts + (choice.effect.parts ?? 0));
+    for (const [key, change] of Object.entries(choice.effect.resources ?? {})) {
+      const resource = key as keyof typeof state.resources;
+      expect(next.resources[resource]).toBe(
+        Math.min(config.resourceCap, state.resources[resource] + change),
+      );
+    }
+    expect(next.pendingEvent).toBeNull();
+    expect(next.actionsRemaining).toBe(state.actionsRemaining);
+    expect(() =>
+      executeCommand(next, { type: "resolve", choiceId: choice.id }),
+    ).toThrow("Нет активного события");
+  });
   it("is deterministic and does not mutate the previous state", () => {
     const initial = fresh();
     const snapshot = JSON.stringify(initial);

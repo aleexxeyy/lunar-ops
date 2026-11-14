@@ -42,7 +42,7 @@ export class MissionsService {
     const current = this.sessions.get(id)!;
     if (current.revision !== request.revision)
       throw new ConflictException(
-        'Состояние изменилось в другой вкладке. Данные обновлены, повторите действие.',
+        'Состояние изменилось в другой вкладке. Проверьте актуальные данные и повторите действие.',
       );
     try {
       const state = executeCommand(current, request.command);

@@ -1,21 +1,6 @@
-import { expect, test, type Page } from "@playwright/test";
-import type { MissionView } from "@lunar-ops/contracts";
+import { expect, test } from "@playwright/test";
+import { act, state } from "./helpers";
 
-async function state(page: Page): Promise<MissionView> {
-  const id = await page.evaluate(() =>
-    localStorage.getItem("lunar-ops-session-v1"),
-  );
-  const response = await page.request.get(`/api/sessions/${id}`);
-  return response.json() as Promise<MissionView>;
-}
-async function act(page: Page, name: string | RegExp): Promise<void> {
-  const response = page.waitForResponse(
-    (r) => r.url().endsWith("/commands") && r.request().method() === "POST",
-  );
-  await page.getByRole("button", { name }).first().click();
-  expect((await response).status()).toBe(201);
-  await expect(page.locator(".connection")).toContainText("КАНАЛ АКТИВЕН");
-}
 test.beforeEach(async ({ page }) => {
   await page.goto("/");
   await expect(

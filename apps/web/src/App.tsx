@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { AnimatePresence, motion, MotionConfig } from "framer-motion";
-import { useMission, type Page } from "./store";
+import { commandsBlocked, useMission, type Page } from "./store";
 import { Icon, type IconName } from "./components/Icon";
 import { StationScene } from "./components/StationScene";
 import { Telemetry } from "./components/Telemetry";
@@ -69,10 +69,26 @@ function App() {
     notice,
     clearNotice,
     send,
+    connection,
+    clearError,
+    restorePage,
   } = useMission();
+  const blocked = useMission(commandsBlocked);
   useEffect(() => {
     void initialize();
   }, [initialize]);
+  useEffect(() => {
+    window.addEventListener("popstate", restorePage);
+    window.addEventListener("hashchange", restorePage);
+    return () => {
+      window.removeEventListener("popstate", restorePage);
+      window.removeEventListener("hashchange", restorePage);
+    };
+  }, [restorePage]);
+  useEffect(() => {
+    document.getElementById("main-content")?.focus({ preventScroll: true });
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [page]);
   useEffect(() => {
     if (!notice) return;
     const timeout = setTimeout(clearNotice, 6000);
@@ -82,7 +98,14 @@ function App() {
   return (
     <MotionConfig reducedMotion="user">
       <div className="app-shell">
-        <a className="skip-link" href="#main-content">
+        <a
+          className="skip-link"
+          href="#main-content"
+          onClick={(event) => {
+            event.preventDefault();
+            document.getElementById("main-content")?.focus();
+          }}
+        >
           К содержимому
         </a>
         <aside className="sidebar">
@@ -156,11 +179,13 @@ function App() {
               <strong>{activePage.name}</strong>
             </div>
             <div className="topbar-right">
-              <span className={`connection ${error ? "offline" : ""}`}>
+              <span
+                className={`connection ${connection === "offline" ? "offline" : ""}`}
+              >
                 <i />
                 {busy
                   ? "СИНХРОНИЗАЦИЯ"
-                  : error
+                  : connection === "offline"
                     ? "ПРОВЕРЬТЕ СВЯЗЬ"
                     : mission
                       ? "КАНАЛ АКТИВЕН"
@@ -188,7 +213,7 @@ function App() {
               </div>
             </div>
           </header>
-          <main id="main-content">
+          <main id="main-content" tabIndex={-1}>
             <div className="page-heading">
               <div>
                 <div className="eyebrow">
@@ -217,9 +242,11 @@ function App() {
                 <button
                   className="button secondary"
                   disabled={busy}
-                  onClick={() => void initialize()}
+                  onClick={() =>
+                    connection === "offline" ? void initialize() : clearError()
+                  }
                 >
-                  Переподключить
+                  {connection === "offline" ? "Переподключить" : "Понятно"}
                 </button>
               </div>
             )}
@@ -236,7 +263,7 @@ function App() {
                 </h2>
                 <p>
                   {error
-                    ? "Запустите frontend и API командой pnpm dev, затем повторите подключение."
+                    ? "Связь с центром управления прервана. Повторите подключение через несколько секунд."
                     : "Получаем состояние станции и проверяем канал управления…"}
                 </p>
               </div>
@@ -274,7 +301,7 @@ function App() {
                     </span>
                     <button
                       className="button primary"
-                      disabled={busy || !mission.canAdvance.available}
+                      disabled={blocked || !mission.canAdvance.available}
                       title={
                         mission.canAdvance.reason ??
                         `Завершить день. Осталось операций: ${mission.actionsRemaining}`

@@ -7,7 +7,7 @@ export default defineConfig({
   timeout: 45000,
   reporter: "list",
   use: {
-    baseURL: "http://127.0.0.1:5173",
+    baseURL: "http://127.0.0.1:5174",
     channel: process.env.PLAYWRIGHT_CHANNEL ?? "chrome",
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
@@ -23,13 +23,15 @@ export default defineConfig({
   webServer: [
     {
       command: "node ../api/dist/main.js",
-      url: "http://127.0.0.1:3000",
-      reuseExistingServer: !process.env.CI,
+      url: "http://127.0.0.1:3100",
+      env: { PORT: "3100" },
+      reuseExistingServer: false,
     },
     {
-      command: "pnpm dev --host 127.0.0.1 --port 5173 --strictPort",
-      url: "http://127.0.0.1:5173",
-      reuseExistingServer: !process.env.CI,
+      command: "pnpm dev --host 127.0.0.1 --port 5174 --strictPort",
+      url: "http://127.0.0.1:5174",
+      env: { LUNAR_API_URL: "http://127.0.0.1:3100" },
+      reuseExistingServer: false,
     },
   ],
 });

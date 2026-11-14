@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { Effect, ResourceKey } from "@lunar-ops/contracts";
-import { useMission } from "../store";
+import { commandsBlocked, useMission } from "../store";
 import { Icon, type IconName } from "./Icon";
 import { resourceLabels } from "./Telemetry";
 
@@ -90,7 +90,8 @@ export function ResourceCards() {
   );
 }
 export function MissionBrief() {
-  const { mission, config, send, busy } = useMission();
+  const { mission, config, send } = useMission();
+  const blocked = useMission(commandsBlocked);
   if (!mission || !config) return null;
   const event = mission.pendingEvent;
   return (
@@ -115,7 +116,9 @@ export function MissionBrief() {
             {event.choices.map((choice) => (
               <button
                 className="event-choice"
-                disabled={busy || !mission.eventChoices[choice.id]?.available}
+                disabled={
+                  blocked || !mission.eventChoices[choice.id]?.available
+                }
                 onClick={() =>
                   void send({ type: "resolve", choiceId: choice.id })
                 }
@@ -206,7 +209,8 @@ const actionIcons: Record<string, IconName> = {
   rest: "moon",
 };
 export function Operations() {
-  const { mission, config, send, busy } = useMission();
+  const { mission, config, send } = useMission();
+  const blocked = useMission(commandsBlocked);
   if (!mission || !config) return null;
   return (
     <section className="panel operations-panel">
@@ -223,7 +227,7 @@ export function Operations() {
         {config.actions.map((action) => (
           <button
             key={action.id}
-            disabled={busy || !mission.availableActions[action.id].available}
+            disabled={blocked || !mission.availableActions[action.id].available}
             className="operation"
             onClick={() => void send({ type: "action", actionId: action.id })}
             title={
@@ -254,7 +258,8 @@ export function Operations() {
   );
 }
 export function ModuleList() {
-  const { mission, config, send, busy } = useMission();
+  const { mission, config, send } = useMission();
+  const blocked = useMission(commandsBlocked);
   if (!mission || !config) return null;
   const icons: Record<string, IconName> = {
     solar: "energy",
@@ -300,7 +305,7 @@ export function ModuleList() {
             <div className="module-upgrade">
               <button
                 className="button secondary"
-                disabled={busy || !mission.upgrades[module.id].available}
+                disabled={blocked || !mission.upgrades[module.id].available}
                 onClick={() =>
                   void send({ type: "upgrade", moduleId: module.id })
                 }

@@ -1,4 +1,7 @@
 import { create } from "zustand";
+import { ApiError, request } from "./api";
+import { currentPage, navigateTo, type Page } from "./navigation";
+export type { Page } from "./navigation";
 import type {
   Difficulty,
   MissionCommand,
@@ -8,7 +11,6 @@ import type {
   ResourceKey,
 } from "@lunar-ops/contracts";
 
-export type Page = "overview" | "station" | "crew" | "journal";
 export type Dialog =
   | { type: "help" }
   | { type: "restart" }
@@ -17,44 +19,6 @@ export type Dialog =
   | { type: "module"; moduleId: ModuleId }
   | null;
 const sessionKey = "lunar-ops-session-v1";
-class ApiError extends Error {
-  readonly status: number;
-  constructor(message: string, status: number) {
-    super(message);
-    this.status = status;
-  }
-}
-async function request<T>(path: string, body?: unknown): Promise<T> {
-  let response: Response;
-  try {
-    response = await fetch(`/api${path}`, {
-      ...(body === undefined
-        ? {}
-        : {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body),
-          }),
-      signal: AbortSignal.timeout(10000),
-    });
-  } catch {
-    throw new Error(
-      "Нет связи с центром управления. Проверьте, что API запущен, и повторите подключение.",
-    );
-  }
-  if (!response.ok) {
-    const error = (await response.json().catch(() => null)) as {
-      message?: string;
-    } | null;
-    throw new ApiError(
-      typeof error?.message === "string"
-        ? error.message
-        : "Сервер недоступен. Повторите подключение.",
-      response.status,
-    );
-  }
-  return response.json() as Promise<T>;
-}
 const message = (error: unknown) =>
   error instanceof Error ? error.message : "Не удалось выполнить запрос.";
 function savedSession(): string | null {
@@ -76,6 +40,7 @@ interface MissionStore {
   config: MissionConfig | null;
   mission: MissionView | null;
   busy: boolean;
+  connection: "online" | "offline";
   error: string | null;
   notice: string | null;
   page: Page;
@@ -84,27 +49,36 @@ interface MissionStore {
   start: (difficulty: Difficulty) => Promise<void>;
   send: (command: MissionCommand) => Promise<void>;
   navigate: (page: Page) => void;
+  restorePage: () => void;
   openDialog: (dialog: Dialog) => void;
   clearNotice: () => void;
+  clearError: () => void;
 }
 
 export const useMission = create<MissionStore>((set, get) => ({
   config: null,
   mission: null,
   busy: false,
+  connection: "offline",
   error: null,
   notice: null,
-  page: "overview",
+  page: currentPage(),
   dialog: null,
-  navigate: (page) => set({ page }),
+  navigate: (page) => {
+    navigateTo(page);
+    set({ page, dialog: null });
+  },
+  restorePage: () => set({ page: currentPage(), dialog: null }),
   openDialog: (dialog) => set({ dialog }),
   clearNotice: () => set({ notice: null }),
+  clearError: () => set({ error: null }),
   initialize: async () => {
     if (get().busy) return;
     set({ busy: true, error: null });
     try {
       const config = await request<MissionConfig>("/config");
-      const id = savedSession();
+      // Keep the active session even when browser storage is unavailable.
+      const id = get().mission?.id ?? savedSession();
       let mission: MissionView;
       if (id) {
         try {
@@ -114,7 +88,7 @@ export const useMission = create<MissionStore>((set, get) => ({
         } catch (error) {
           if (!(error instanceof ApiError) || error.status !== 404) throw error;
           mission = await request<MissionView>("/sessions", {
-            difficulty: "cadet",
+            difficulty: get().mission?.difficulty ?? "cadet",
           });
           set({
             notice:
@@ -126,9 +100,9 @@ export const useMission = create<MissionStore>((set, get) => ({
           difficulty: "cadet",
         });
       remember(mission.id);
-      set({ config, mission });
+      set({ config, mission, connection: "online" });
     } catch (error) {
-      set({ error: message(error) });
+      set({ error: message(error), connection: "offline" });
     } finally {
       set({ busy: false });
     }
@@ -139,22 +113,24 @@ export const useMission = create<MissionStore>((set, get) => ({
     try {
       const mission = await request<MissionView>("/sessions", { difficulty });
       remember(mission.id);
+      navigateTo("overview");
       set({
         mission,
+        connection: "online",
         page: "overview",
         dialog: null,
         notice: "Новая экспедиция готова. Добро пожаловать на Луну.",
       });
     } catch (error) {
-      set({ error: message(error) });
+      set({ error: message(error), connection: "offline" });
     } finally {
       set({ busy: false });
     }
   },
   send: async (command) => {
-    const { mission, busy } = get();
-    if (!mission || busy) return;
-    set({ busy: true, error: null });
+    const { mission, busy, connection } = get();
+    if (!mission || busy || connection !== "online") return;
+    set({ busy: true, error: null, notice: null });
     try {
       const next = await request<MissionView>(
         `/sessions/${mission.id}/commands`,
@@ -162,13 +138,27 @@ export const useMission = create<MissionStore>((set, get) => ({
       );
       set({
         mission: next,
+        connection: "online",
         notice: next.log.at(-1)?.message ?? "Команда выполнена.",
       });
     } catch (error) {
-      set({ error: message(error) });
+      set({ error: message(error), connection: "offline" });
       // A lost response may still have committed the command; reconcile without replaying it.
       try {
-        set({ mission: await request<MissionView>(`/sessions/${mission.id}`) });
+        const latest = await request<MissionView>(`/sessions/${mission.id}`);
+        const uncertainResponse =
+          !(error instanceof ApiError) || error.status >= 500;
+        set({
+          mission: latest,
+          connection: "online",
+          ...(uncertainResponse && latest.revision > mission.revision
+            ? {
+                error: null,
+                notice:
+                  "Связь восстановлена. Состояние миссии обновлено — результат доступен в журнале.",
+              }
+            : {}),
+        });
       } catch {
         /* Preserve the last confirmed state and error. */
       }
@@ -177,3 +167,6 @@ export const useMission = create<MissionStore>((set, get) => ({
     }
   },
 }));
+
+export const commandsBlocked = (state: MissionStore): boolean =>
+  state.busy || state.connection !== "online";

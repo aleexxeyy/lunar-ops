@@ -5,6 +5,8 @@ import { Icon } from "./Icon";
 export function StationScene() {
   const [mode, setMode] = useState<"surface" | "orbit">("surface");
   const mission = useMission((s) => s.mission)!;
+  const config = useMission((s) => s.config)!;
+  const connection = useMission((s) => s.connection);
   const openDialog = useMission((s) => s.openDialog);
   return (
     <section className="panel scene-panel">
@@ -14,7 +16,8 @@ export function StationScene() {
           <h2>База «Горизонт»</h2>
         </div>
         <span className="live-badge">
-          <i />В СЕТИ
+          <i />
+          {connection === "online" ? "В СЕТИ" : "НЕТ СВЯЗИ"}
         </span>
       </div>
       <div className="scene-tabs" aria-label="Вид базы">
@@ -311,6 +314,28 @@ export function StationScene() {
               SCI-04 <span>LVL {mission.modules.laboratory}</span>
               <Icon name="arrowUp" size={12} />
             </button>
+            <button
+              className="map-label recycler-label"
+              onClick={() =>
+                openDialog({ type: "module", moduleId: "recycler" })
+              }
+              aria-label="Система жизнеобеспечения: детали модуля"
+            >
+              <i />
+              LSS-02 <span>LVL {mission.modules.recycler}</span>
+              <Icon name="arrowUp" size={12} />
+            </button>
+            <button
+              className="map-label greenhouse-label"
+              onClick={() =>
+                openDialog({ type: "module", moduleId: "greenhouse" })
+              }
+              aria-label="Гидропонный отсек: детали модуля"
+            >
+              <i />
+              BIO-03 <span>LVL {mission.modules.greenhouse}</span>
+              <Icon name="arrowUp" size={12} />
+            </button>
           </>
         )}
         <div className="scene-corner top-left" />
@@ -318,7 +343,8 @@ export function StationScene() {
       </div>
       <div className="scene-footer">
         <span>
-          <i className="status-dot" />4 модуля подключены
+          <i className="status-dot" />
+          Модулей на базе: {config.modules.length}
         </span>
         <span>
           ЮЖНЫЙ ПОЛЮС <Icon name="target" size={14} />

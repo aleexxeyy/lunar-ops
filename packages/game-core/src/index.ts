@@ -80,6 +80,20 @@ function actionSlot(state: MissionState): Availability {
     : denied("Все операции на сегодня выполнены. Завершите день.");
 }
 
+function hasBenefit(state: MissionState, effect: Effect): boolean {
+  return (
+    (effect.science ?? 0) > 0 ||
+    (effect.parts ?? 0) > 0 ||
+    resourceKeys.some(
+      (key) =>
+        (effect.resources?.[key] ?? 0) > 0 &&
+        state.resources[key] < config.resourceCap,
+    ) ||
+    ((effect.health ?? 0) > 0 &&
+      state.crew.some((member) => member.health < config.initialHealth))
+  );
+}
+
 function upgradeCost(state: MissionState, id: ModuleId): number {
   return (
     config.upgrade.baseCost +
@@ -110,7 +124,11 @@ export function getMissionView(state: MissionState): MissionView {
         ? slot
         : state.usedActions.includes(action.id)
           ? denied("Эта операция уже выполнена сегодня.")
-          : affordable(state, action.effect),
+          : !hasBenefit(state, action.effect)
+            ? denied(
+                "Восстановление не требуется: запас и здоровье уже полные.",
+              )
+            : affordable(state, action.effect),
     ]),
   ) as MissionView["availableActions"];
   const upgrades = Object.fromEntries(

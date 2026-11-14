@@ -864,6 +864,26 @@ h1 {
   top: 28%;
   left: 15%;
 }
+.recycler-label {
+  top: 62%;
+  left: 20%;
+}
+.greenhouse-label {
+  top: 79%;
+  right: 9%;
+}
+.resource-actions {
+  display: grid;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+.resource-actions p {
+  margin: 0;
+}
+main:focus {
+  outline: none;
+}
 .lab-label {
   top: 22%;
   right: 9%;
