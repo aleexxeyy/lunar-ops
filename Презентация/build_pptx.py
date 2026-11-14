@@ -178,7 +178,8 @@ def head(s, eyebrow, title, light):
 
 def footer(s, left, right, light):
     c = FOOT_L if light else FOOT_D
-    text(s, 128, 984, 900, 32, left, 24, c, MONO, name="Footer left")
+    left = "ASTRA SYSTEMS · " + left
+    text(s, 128, 984, 1100, 32, left, 24, c, MONO, name="Footer left")
     text(s, 1292, 984, 500, 32, right, 24, c, MONO, align=PP_ALIGN.RIGHT, name="Footer right")
 
 
@@ -267,9 +268,9 @@ def space_slide(dim=0.62):
 # ---------- 1. cover ----------
 s = space_slide(0.5)
 cover_background(s, stars=False)
-logo = s.shapes.add_picture(str(LOGO), E(1060), E(126), E(528), None)
+logo = s.shapes.add_picture(str(LOGO), E(1054), E(90), E(528), None)
 logo.name = "Astra Systems logo"
-nasa = s.shapes.add_picture(str(ASSETS / "logo-nasa.png"), E(1622), E(80), E(170), None)
+nasa = s.shapes.add_picture(str(ASSETS / "logo-nasa.png"), E(1622), E(94), E(170), None)
 nasa.name = "NASA logo"
 text(s, 128, 128, 1100, 32, "NASA SPACE APPS CHALLENGE · DNIPRO 2026", 24, MARS, MONO, bold=True, spacing=4)
 text(s, 128, 186, 1100, 140, "Astra Systems", 120, MOON, HEAD, bold=True, name="Team name")
@@ -287,6 +288,7 @@ tf.paragraphs[0].alignment = PP_ALIGN.CENTER
 text(s, 128, 820, 1000, 70, "Separated Structural Subdivision «Applied Rocket-and-Space Engineering College "
      "of Oles Honchar Dnipro National University»", 24, MUTE, line=1.15)
 text(s, 128, 904, 1000, 36, "https://" + REPO, 24, TEAL, MONO)
+footer(s, FOOT, "", False)
 notes(s, "Титульный слайд: команда Astra Systems, проект Lunar Ops, челлендж, колледж и ссылка на репозиторий. "
          "Фон — космос (из правок команды) + Марс и луна из отдельных фигур (Mars, Crater 1–3, Moon, Orbit). Логотипы Astra Systems и NASA.")
 
