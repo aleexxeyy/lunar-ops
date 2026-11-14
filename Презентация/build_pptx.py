@@ -201,7 +201,7 @@ def oval(s, cx, cy, r, color, alpha=1.0, name=None):
 
 
 def cover_background(s, stars=True):
-    """Cover backdrop from separate native shapes: stars, orbit, Moon, craters, Earth."""
+    """Cover backdrop from separate native shapes: stars, orbit, Mars, craters, moon."""
     for i, (x, y, r, a) in enumerate(STARS[:26] if stars else [], 1):
         oval(s, x, y, r * 1.5, MOON, a, name=f"Star {i:02d}")
     orb = s.shapes.add_shape(MSO_SHAPE.OVAL, E(1560 - 640), E(840 - 140), E(1280), E(280))
@@ -212,30 +212,19 @@ def cover_background(s, stars=True):
     set_alpha(orb._element.spPr.find(qn("a:ln")), 0.35)
     orb.rotation = -14
     orb.shadow.inherit = False
-    moon = oval(s, 1560, 840, 380, "A8AFC4", name="Moon")
-    spPr = moon._element.spPr
+    mars = oval(s, 1560, 840, 380, "E8622C", name="Mars")
+    spPr = mars._element.spPr
     spPr.remove(spPr.find(qn("a:solidFill")))
-    grad = etree.fromstring(
+    spPr.insert(list(spPr).index(spPr.find(qn("a:prstGeom"))) + 1, etree.fromstring(
         '<a:gradFill xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" rotWithShape="1">'
-        '<a:gsLst><a:gs pos="0"><a:srgbClr val="F6F8FC"/></a:gs>'
-        '<a:gs pos="45000"><a:srgbClr val="A8AFC4"/></a:gs>'
-        '<a:gs pos="100000"><a:srgbClr val="2C324A"/></a:gs></a:gsLst>'
-        '<a:path path="circle"><a:fillToRect l="35000" t="30000" r="65000" b="70000"/></a:path>'
-        '</a:gradFill>')
-    spPr.insert(list(spPr).index(spPr.find(qn("a:prstGeom"))) + 1, grad)
-    for i, (x, y, r, a) in enumerate([(1440, 700, 46, .3), (1660, 930, 70, .25), (1720, 720, 28, .3),
-                                      (1360, 900, 22, .25)], 1):
-        oval(s, x, y, r, "2C324A", a, name=f"Crater {i}")
-    earth = oval(s, 980, 1000, 34, "4A8FE7", name="Earth")
-    e_spPr = earth._element.spPr
-    e_spPr.remove(e_spPr.find(qn("a:solidFill")))
-    e_spPr.insert(list(e_spPr).index(e_spPr.find(qn("a:prstGeom"))) + 1, etree.fromstring(
-        '<a:gradFill xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" rotWithShape="1">'
-        '<a:gsLst><a:gs pos="0"><a:srgbClr val="9FD3FF"/></a:gs>'
-        '<a:gs pos="55000"><a:srgbClr val="2F7FE0"/></a:gs>'
-        '<a:gs pos="100000"><a:srgbClr val="0E2A66"/></a:gs></a:gsLst>'
+        '<a:gsLst><a:gs pos="0"><a:srgbClr val="FFB27A"/></a:gs>'
+        '<a:gs pos="45000"><a:srgbClr val="E8622C"/></a:gs>'
+        '<a:gs pos="100000"><a:srgbClr val="4A140A"/></a:gs></a:gsLst>'
         '<a:path path="circle"><a:fillToRect l="35000" t="30000" r="65000" b="70000"/></a:path>'
         '</a:gradFill>'))
+    for i, (x, y, r, a) in enumerate([(1440, 700, 46, .35), (1660, 930, 70, .3), (1720, 720, 28, .35)], 1):
+        oval(s, x, y, r, "4A140A", a, name=f"Crater {i}")
+    oval(s, 980, 1000, 34, "C9CEDF", name="Moon")
 
 
 def notes(s, t):
@@ -247,7 +236,7 @@ FOOT = "NASA SPACE APPS · DNIPRO 2026"
 PAPER = "CBD0E9"  # lavender light background (from the team's edit)
 SHOT_EVENT, SHOT_DASH, SHOT_MOBILE = (ASSETS / n for n in ("shot-event.png", "shot-dashboard.png", "shot-mobile.png"))
 NEBULA, CARD_STARS, LOGO = ASSETS / "bg-nebula.jpg", ASSETS / "card-stars.jpg", ASSETS / "logo-astra.png"
-TEAM = [("olexii", "Olexii Tkachov", "Team lead, software engineer"),
+TEAM = [("olexii", "Olexii Tkachov", "Team lead\ndeveloper\nplayboy\nfilantrop\nbuisness man\nDNIPRO FOREVER"),
         ("vladislav", "Vladislav Shatohin", "Software engineer"),
         ("yelizaveta", "Yelizaveta Lebidieva", "Graphic designer"),
         ("kirilo", "Kirilo Sidoruk", "Presentation designer"),
@@ -278,8 +267,10 @@ def space_slide(dim=0.62):
 # ---------- 1. cover ----------
 s = space_slide(0.5)
 cover_background(s, stars=False)
-logo = s.shapes.add_picture(str(LOGO), E(1264), E(110), E(528), None)
+logo = s.shapes.add_picture(str(LOGO), E(1060), E(126), E(528), None)
 logo.name = "Astra Systems logo"
+nasa = s.shapes.add_picture(str(ASSETS / "logo-nasa.png"), E(1622), E(80), E(170), None)
+nasa.name = "NASA logo"
 text(s, 128, 128, 1100, 32, "NASA SPACE APPS CHALLENGE · DNIPRO 2026", 24, MARS, MONO, bold=True, spacing=4)
 text(s, 128, 186, 1100, 140, "Astra Systems", 120, MOON, HEAD, bold=True, name="Team name")
 text(s, 128, 350, 1060, 120, "Lunar Ops — a browser-based lunar survival and science simulator", 44,
@@ -297,7 +288,7 @@ text(s, 128, 820, 1000, 70, "Separated Structural Subdivision «Applied Rocket-a
      "of Oles Honchar Dnipro National University»", 24, MUTE, line=1.15)
 text(s, 128, 904, 1000, 36, "https://" + REPO, 24, TEAL, MONO)
 notes(s, "Титульный слайд: команда Astra Systems, проект Lunar Ops, челлендж, колледж и ссылка на репозиторий. "
-         "Фон — космос (из правок команды) + Луна и Земля из отдельных фигур (Moon, Crater 1–4, Earth, Orbit).")
+         "Фон — космос (из правок команды) + Марс и луна из отдельных фигур (Mars, Crater 1–3, Moon, Orbit). Логотипы Astra Systems и NASA.")
 
 # ---------- 2. mission ----------
 s = new_slide(PAPER)
@@ -420,14 +411,14 @@ text(s, 128, 262, 1664, 36, "Students of the Applied Rocket-and-Space Engineerin
 cw, gap = 312, 26
 for i, (key, name, role) in enumerate(TEAM):
     x = 128 + i * (cw + gap)
-    box(s, x, 330, cw, 470, CARD, name=f"Member {i + 1}")
+    box(s, x, 330, cw, 560, CARD, name=f"Member {i + 1}")
     ph = s.shapes.add_picture(str(ASSETS / f"team-{key}.jpg"), E(x + (cw - 200) / 2), E(366), E(200), E(200))
     ph.name = f"Photo {name}"
     geom(ph, "ellipse")
     ph.line.color.rgb = rgb(MARS)
     ph.line.width = Pt(3)
     text(s, x + 16, 596, cw - 32, 80, name, 30, INK, HEAD, bold=True, align=PP_ALIGN.CENTER, line=1.05)
-    text(s, x + 16, 690, cw - 32, 80, role, 24, MARS_D, MONO, align=PP_ALIGN.CENTER, line=1.1)
+    text(s, x + 16, 690, cw - 32, 180, role.split("\n"), 24, MARS_D, MONO, align=PP_ALIGN.CENTER, line=1.1)
 footer(s, FOOT, "06 / 07", True)
 notes(s, "Команда Astra Systems (по странице команды на spaceappschallenge.org): Олексій Ткачов — лид, "
          "Владислав Шатохін, Єлизавета Лебідєва, Кирило Сидорук, Тетяна Мандрика. Стек: TypeScript, React, NestJS.")
