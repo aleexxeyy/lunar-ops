@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+from lxml import etree
 from PIL import Image, ImageDraw
 from pptx import Presentation
 from pptx.dml.color import RGBColor
@@ -90,9 +91,6 @@ def starfield(name, planet=None, craters=(), orbit=None, moon=None):
     return p
 
 
-BG_COVER = starfield("bg-cover.png", planet=(1560, 840, 380),
-                     craters=[(1440, 700, 46, .35), (1660, 930, 70, .3), (1720, 720, 28, .35)],
-                     orbit=(1560, 840, 640, 140, 14), moon=(980, 1000, 34))
 BG_STARS = starfield("bg-stars.png")
 BG_NEXT = starfield("bg-next.png", planet=(1760, 150, 200))
 
@@ -186,6 +184,52 @@ def footer(s, left, right, light):
     text(s, 1292, 984, 500, 32, right, 24, c, MONO, align=PP_ALIGN.RIGHT, name="Footer right")
 
 
+def set_alpha(parent, alpha):
+    """Add <a:alpha> (0..1) to the first srgbClr under parent."""
+    clr = parent.find(".//" + qn("a:srgbClr"))
+    etree.SubElement(clr, qn("a:alpha")).set("val", str(int(alpha * 100000)))
+
+
+def oval(s, cx, cy, r, color, alpha=1.0, name=None):
+    sh = s.shapes.add_shape(MSO_SHAPE.OVAL, E(cx - r), E(cy - r), E(2 * r), E(2 * r))
+    sh.name = name or "Shape"
+    sh.fill.solid()
+    sh.fill.fore_color.rgb = rgb(color)
+    if alpha < 1:
+        set_alpha(sh._element.spPr.find(qn("a:solidFill")), alpha)
+    sh.line.fill.background()
+    sh.shadow.inherit = False
+    return sh
+
+
+def cover_background(s):
+    """Cover backdrop from separate native shapes: stars, orbit, Mars, craters, moon."""
+    for i, (x, y, r, a) in enumerate(STARS[:26], 1):
+        oval(s, x, y, r * 1.5, MOON, a, name=f"Star {i:02d}")
+    orb = s.shapes.add_shape(MSO_SHAPE.OVAL, E(1560 - 640), E(840 - 140), E(1280), E(280))
+    orb.name = "Orbit"
+    orb.fill.background()
+    orb.line.color.rgb = rgb(MARS)
+    orb.line.width = Pt(1)
+    set_alpha(orb._element.spPr.find(qn("a:ln")), 0.35)
+    orb.rotation = -14
+    orb.shadow.inherit = False
+    mars = oval(s, 1560, 840, 380, "E8622C", name="Mars")
+    spPr = mars._element.spPr
+    spPr.remove(spPr.find(qn("a:solidFill")))
+    grad = etree.fromstring(
+        '<a:gradFill xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" rotWithShape="1">'
+        '<a:gsLst><a:gs pos="0"><a:srgbClr val="FFB27A"/></a:gs>'
+        '<a:gs pos="45000"><a:srgbClr val="E8622C"/></a:gs>'
+        '<a:gs pos="100000"><a:srgbClr val="4A140A"/></a:gs></a:gsLst>'
+        '<a:path path="circle"><a:fillToRect l="35000" t="30000" r="65000" b="70000"/></a:path>'
+        '</a:gradFill>')
+    spPr.insert(list(spPr).index(spPr.find(qn("a:prstGeom"))) + 1, grad)
+    for i, (x, y, r, a) in enumerate([(1440, 700, 46, .35), (1660, 930, 70, .3), (1720, 720, 28, .35)], 1):
+        oval(s, x, y, r, "4A140A", a, name=f"Crater {i}")
+    oval(s, 980, 1000, 34, "C9CEDF", name="Moon")
+
+
 def notes(s, t):
     s.notes_slide.notes_text_frame.text = t
 
@@ -193,7 +237,8 @@ def notes(s, t):
 FOOT = "NASA SPACE APPS · DNIPRO 2026"
 
 # ---------- 1. cover ----------
-s = new_slide(INK, BG_COVER)
+s = new_slide(INK)
+cover_background(s)
 text(s, 128, 128, 1100, 32, "NASA SPACE APPS CHALLENGE · DNIPRO 2026", 24, MARS, MONO, bold=True, spacing=4)
 text(s, 128, 186, 1100, 140, "[TEAM NAME]", 120, MOON, HEAD, bold=True, name="Team name")
 text(s, 128, 350, 1060, 120, "[Project name] — a game where kids run their own Moon or Mars outpost", 44, MOON,
@@ -211,7 +256,9 @@ text(s, 128, 820, 1000, 70, "Separated Structural Subdivision «Applied Rocket-a
      "of Oles Honchar Dnipro National University»", 24, MUTE, line=1.15)
 text(s, 128, 904, 1000, 36, "[team@email.com] · [github / demo link]", 24, TEAL, MONO)
 notes(s, "Титульный слайд: название команды, проекта, выбранный челлендж и контакты "
-         "(мануал просит контакты на первом слайде). Заменить всё в квадратных скобках.")
+         "(мануал просит контакты на первом слайде). Заменить всё в квадратных скобках. "
+         "Фон собран из отдельных фигур (Star 01–26, Orbit, Mars, Crater 1–3, Moon) — "
+         "см. Главная → Выделить → Область выделения.")
 
 # ---------- 2. mission ----------
 s = new_slide(PAPER)
