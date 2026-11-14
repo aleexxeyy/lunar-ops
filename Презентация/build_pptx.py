@@ -54,7 +54,7 @@ def mars_layer(img, cx, cy, r):
     # radial gradient centred at 35%/30% of the bounding box
     gx, gy = cx - r + 0.7 * r, cy - r + 0.6 * r
     t = np.clip(np.sqrt((xx - gx * S) ** 2 + (yy - gy * S) ** 2) / (1.5 * r * S), 0, 1)
-    stops = [(0, (255, 178, 122)), (0.45, (232, 98, 44)), (1, (74, 20, 10))]
+    stops = [(0, (246, 248, 252)), (0.45, (168, 175, 196)), (1, (44, 50, 74))]  # Moon grey
     out = np.zeros((h, w, 3), np.float32)
     for (t0, c0), (t1, c1) in zip(stops, stops[1:]):
         seg = (t >= t0) & (t <= t1)
@@ -93,6 +93,7 @@ def starfield(name, planet=None, craters=(), orbit=None, moon=None):
 
 BG_STARS = starfield("bg-stars.png")
 BG_NEXT = starfield("bg-next.png", planet=(1760, 150, 200))
+SHOT_EVENT, SHOT_DASH, SHOT_MOBILE = (ASSETS / n for n in ("shot-event.png", "shot-dashboard.png", "shot-mobile.png"))
 
 # ---------- deck helpers ----------
 prs = Presentation()
@@ -203,7 +204,7 @@ def oval(s, cx, cy, r, color, alpha=1.0, name=None):
 
 
 def cover_background(s):
-    """Cover backdrop from separate native shapes: stars, orbit, Mars, craters, moon."""
+    """Cover backdrop from separate native shapes: stars, orbit, Moon, craters, Earth."""
     for i, (x, y, r, a) in enumerate(STARS[:26], 1):
         oval(s, x, y, r * 1.5, MOON, a, name=f"Star {i:02d}")
     orb = s.shapes.add_shape(MSO_SHAPE.OVAL, E(1560 - 640), E(840 - 140), E(1280), E(280))
@@ -214,20 +215,30 @@ def cover_background(s):
     set_alpha(orb._element.spPr.find(qn("a:ln")), 0.35)
     orb.rotation = -14
     orb.shadow.inherit = False
-    mars = oval(s, 1560, 840, 380, "E8622C", name="Mars")
-    spPr = mars._element.spPr
+    moon = oval(s, 1560, 840, 380, "A8AFC4", name="Moon")
+    spPr = moon._element.spPr
     spPr.remove(spPr.find(qn("a:solidFill")))
     grad = etree.fromstring(
         '<a:gradFill xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" rotWithShape="1">'
-        '<a:gsLst><a:gs pos="0"><a:srgbClr val="FFB27A"/></a:gs>'
-        '<a:gs pos="45000"><a:srgbClr val="E8622C"/></a:gs>'
-        '<a:gs pos="100000"><a:srgbClr val="4A140A"/></a:gs></a:gsLst>'
+        '<a:gsLst><a:gs pos="0"><a:srgbClr val="F6F8FC"/></a:gs>'
+        '<a:gs pos="45000"><a:srgbClr val="A8AFC4"/></a:gs>'
+        '<a:gs pos="100000"><a:srgbClr val="2C324A"/></a:gs></a:gsLst>'
         '<a:path path="circle"><a:fillToRect l="35000" t="30000" r="65000" b="70000"/></a:path>'
         '</a:gradFill>')
     spPr.insert(list(spPr).index(spPr.find(qn("a:prstGeom"))) + 1, grad)
-    for i, (x, y, r, a) in enumerate([(1440, 700, 46, .35), (1660, 930, 70, .3), (1720, 720, 28, .35)], 1):
-        oval(s, x, y, r, "4A140A", a, name=f"Crater {i}")
-    oval(s, 980, 1000, 34, "C9CEDF", name="Moon")
+    for i, (x, y, r, a) in enumerate([(1440, 700, 46, .3), (1660, 930, 70, .25), (1720, 720, 28, .3),
+                                      (1360, 900, 22, .25)], 1):
+        oval(s, x, y, r, "2C324A", a, name=f"Crater {i}")
+    earth = oval(s, 980, 1000, 34, "4A8FE7", name="Earth")
+    e_spPr = earth._element.spPr
+    e_spPr.remove(e_spPr.find(qn("a:solidFill")))
+    e_spPr.insert(list(e_spPr).index(e_spPr.find(qn("a:prstGeom"))) + 1, etree.fromstring(
+        '<a:gradFill xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" rotWithShape="1">'
+        '<a:gsLst><a:gs pos="0"><a:srgbClr val="9FD3FF"/></a:gs>'
+        '<a:gs pos="55000"><a:srgbClr val="2F7FE0"/></a:gs>'
+        '<a:gs pos="100000"><a:srgbClr val="0E2A66"/></a:gs></a:gsLst>'
+        '<a:path path="circle"><a:fillToRect l="35000" t="30000" r="65000" b="70000"/></a:path>'
+        '</a:gradFill>'))
 
 
 def notes(s, t):
@@ -241,8 +252,8 @@ s = new_slide(INK)
 cover_background(s)
 text(s, 128, 128, 1100, 32, "NASA SPACE APPS CHALLENGE · DNIPRO 2026", 24, MARS, MONO, bold=True, spacing=4)
 text(s, 128, 186, 1100, 140, "[TEAM NAME]", 120, MOON, HEAD, bold=True, name="Team name")
-text(s, 128, 350, 1060, 120, "[Project name] — a game where kids run their own Moon or Mars outpost", 44, MOON,
-     line=1.1)
+text(s, 128, 350, 1060, 120, "Lunar Ops — a mission-control game where kids keep a Moon base crew alive", 44,
+     MOON, line=1.1, name="Project name")
 pill = box(s, 128, 500, 860, 64, MARS, radius=32)
 tf = pill.text_frame
 tf.margin_left = tf.margin_right = E(28)
@@ -254,26 +265,25 @@ r.font.color.rgb = rgb(INK)
 tf.paragraphs[0].alignment = PP_ALIGN.CENTER
 text(s, 128, 820, 1000, 70, "Separated Structural Subdivision «Applied Rocket-and-Space Engineering College "
      "of Oles Honchar Dnipro National University»", 24, MUTE, line=1.15)
-text(s, 128, 904, 1000, 36, "[team@email.com] · [github / demo link]", 24, TEAL, MONO)
-notes(s, "Титульный слайд: название команды, проекта, выбранный челлендж и контакты "
-         "(мануал просит контакты на первом слайде). Заменить всё в квадратных скобках. "
-         "Фон собран из отдельных фигур (Star 01–26, Orbit, Mars, Crater 1–3, Moon) — "
-         "см. Главная → Выделить → Область выделения.")
+text(s, 128, 904, 1000, 36, "[team@email.com] · github.com/aleexxeyy/lunar-ops", 24, TEAL, MONO)
+notes(s, "Титульный слайд: команда, проект Lunar Ops, челлендж и контакты (мануал просит контакты на первом "
+         "слайде). Заменить [TEAM NAME] и почту. Фон из отдельных фигур (Star 01–26, Orbit, Moon, Crater 1–4, "
+         "Earth) — Главная → Выделить → Область выделения.")
 
 # ---------- 2. mission ----------
 s = new_slide(PAPER)
 head(s, "01 // MISSION BRIEFING", "Learning the trade-offs of survival", True)
 cards = [("THE PROBLEM", "Space lessons for kids are either flat facts on a poster or too technical to follow. "
           "Students see how a mission ends — never the decisions behind it.", CARD, MARS_D, MUTE_L),
-         ("OUR MISSION", "[Project name] is a browser game where players run a lunar or Martian outpost and feel "
-          "that no choice is free: saving power today can cost oxygen tomorrow.", INK, MARS, MUTE)]
+         ("OUR MISSION", "Lunar Ops puts the player in command of Horizon base on the Moon. Keep three astronauts "
+          "safe, finish the science program — and learn that no choice is free.", INK, MARS, MUTE)]
 for i, (tag, body, fill, tagc, bodyc) in enumerate(cards):
     x = 128 + i * (816 + 32)
     box(s, x, 300, 816, 300, fill)
     text(s, x + 40, 340, 736, 32, tag, 24, tagc, MONO, bold=True, spacing=2)
     text(s, x + 40, 388, 736, 190, body, 28, bodyc, line=1.15)
-stats = [("7–12", "years old — our main players"), ("3", "core resources: power, life support, shielding"),
-         ("0", "downloads or accounts needed")]
+stats = [("7", "days on the Moon to survive"), ("4", "resources: energy, oxygen, water, morale"),
+         ("60", "science points to complete the mission")]
 w = (1664 - 64) / 3
 for i, (num, lbl) in enumerate(stats):
     x = 128 + i * (w + 32)
@@ -281,78 +291,78 @@ for i, (num, lbl) in enumerate(stats):
     text(s, x + 40, 672, w - 80, 100, num, 96, INK, HEAD, bold=True)
     text(s, x + 40, 786, w - 80, 66, lbl, 26, MUTE_L, line=1.1)
 footer(s, FOOT, "02 / 07", True)
-notes(s, "Проблема из описания челленджа и наша цель. Цифры — из условий задания (возраст 7–12, "
-         "2–3 ключевых ресурса, игра в браузере без регистрации). Поправить, если механика изменится.")
+notes(s, "Проблема и цель. Цифры — из game-config: 7 игровых дней, 4 ресурса, цель 60 научных данных, "
+         "экипаж из 3 человек. Аудитория — дети 7–12 лет (условие челленджа).")
 
 # ---------- 3. how it works ----------
 s = new_slide(INK, BG_STARS)
-head(s, "02 // HOW IT WORKS", "Every sol is a trade-off", False)
-steps = [("Briefing", "Check today’s space weather and the outpost status. A sol is one day on Mars."),
-         ("Plan", "Split a limited power budget between life support, shielding and food."),
-         ("Event", "A solar flare, dust storm or communication delay tests the plan."),
-         ("Debrief", "See what each choice cost and why, with the real science behind it.")]
+head(s, "02 // HOW IT WORKS", "Every day is a trade-off", False)
+steps = [("Check the base", "Energy, oxygen, water and morale drop every day — see the forecast."),
+         ("Spend 2 operations", "Research, make oxygen, recycle water, rest or upgrade a module."),
+         ("Face an event", "Solar storm, air leak, ice signal: two answers, each has a price."),
+         ("End the day", "Modules produce, roles give bonuses, a short lesson explains why.")]
 for i, (t, b) in enumerate(steps):
     y = 300 + i * 120
     circle_label(s, 128, y, 64, MARS, str(i + 1), 28, INK)
     text(s, 220, y - 2, 820, 40, t, 32, MOON, HEAD, bold=True)
     text(s, 220, y + 40, 820, 70, b, 26, MUTE, line=1.1)
-text(s, 128, 800, 900, 44, "Save power today → lose oxygen tomorrow", 32, TEAL, italic=True)
-box(s, 1112, 300, 680, 560, INK2, line=LINE, line_w=1.5)
-text(s, 1152, 340, 600, 32, "OUTPOST STATUS · SOL 14 · [MOCK-UP]", 24, MUTE, MONO, bold=True)
-for i, (lbl, pct, col) in enumerate([("Power", 62, AMBER), ("Life support", 80, TEAL), ("Shielding", 35, LAV)]):
-    y = 400 + i * 92
-    text(s, 1152, y, 400, 34, lbl, 26, MOON, MONO)
-    text(s, 1552, y, 200, 34, f"{pct}%", 26, MOON, MONO, align=PP_ALIGN.RIGHT)
-    box(s, 1152, y + 44, 600, 24, INK, radius=12)
-    box(s, 1152, y + 44, 600 * pct / 100, 24, col, radius=12, name=f"Gauge {lbl}")
-box(s, 1152, 700, 600, 110, "3A1A12", radius=18)
-circle_label(s, 1176, 735, 40, MARS, "!", 26, INK)
-text(s, 1236, 712, 500, 90, "Solar flare expected in 2 sols. Data: NASA DONKI", 24, "FFD9C7",
-     anchor=MSO_ANCHOR.MIDDLE, line=1.1)
+text(s, 128, 800, 940, 44, "Shield the crew from a storm → less energy for research", 32, TEAL, italic=True)
+box(s, 1108, 296, 688, 572, INK2, line=LINE, line_w=1.5, radius=20)
+pic = s.shapes.add_picture(str(SHOT_EVENT), E(1112), E(300), E(680), E(565))
+pic.name = "Screenshot: solar storm event"
+text(s, 1112, 880, 680, 30, "Day 2 event in the working prototype", 22, MUTE, MONO, align=PP_ALIGN.CENTER)
 footer(s, FOOT, "03 / 07", False)
-notes(s, "Игровой цикл одного сола и макет панели статуса. Значения шкал — пример, заменить реальным "
-         "скриншотом/механикой, когда будет готов прототип.")
+notes(s, "Игровой цикл одного дня. Справа — реальный скриншот события «Солнечная буря» (день 2): два решения, "
+         "у каждого своя цена. Расход в день: энергия −18, кислород −14, вода −12, мораль −6 (Командир: +35%).")
 
 # ---------- 4. experience ----------
 s = new_slide(PAPER)
 head(s, "03 // PLAYER EXPERIENCE", "Easy to start, hard to master", True)
-box(s, 128, 300, 900, 560, INK, line=FOOT_L, line_w=2, dash=True, name="Screenshot placeholder")
-tri = box(s, 538, 460, 96, 96, MARS, radius=0, shape=MSO_SHAPE.ISOSCELES_TRIANGLE)
-tri.rotation = 90
-text(s, 128, 600, 900, 40, "[Game screenshot / prototype]", 28, MUTE, MONO, align=PP_ALIGN.CENTER)
-feats = [("www", "Free, in any browser", "No download, no account. Works on school computers and phones."),
-         ("Aa", "Plain language", "Words like sol or radiation dose are explained right in the game."),
-         ("↻", "Different every run", "Random events push players to try new strategies and learn from failure.")]
+box(s, 124, 300, 908, 514, INK, radius=12)
+pic = s.shapes.add_picture(str(SHOT_DASH), E(128), E(304), E(900), E(506))
+pic.name = "Screenshot: mission dashboard"
+box(s, 868, 476, 204, 424, INK, radius=24)
+pic = s.shapes.add_picture(str(SHOT_MOBILE), E(876), E(484), E(188), E(408))
+pic.name = "Screenshot: mobile"
+text(s, 128, 836, 720, 30, "Mission dashboard · desktop and phone", 22, MUTE_L, MONO)
+feats = [("www", "Free, in any browser", "No download, no account. Adapts to school computers and phones."),
+         ("2", "Cadet or Commander", "Two difficulty levels: Commander burns resources 35% faster."),
+         ("i", "Learn by deciding", "Every event ends with a short lesson on real lunar science.")]
 for i, (g, t, b) in enumerate(feats):
     y = 340 + i * 170
-    circle_label(s, 1092, y, 80, INK, g, 24 if len(g) > 2 else 32, MARS, font=HEAD)
-    text(s, 1200, y, 592, 40, t, 32, INK, HEAD, bold=True)
-    text(s, 1200, y + 46, 592, 80, b, 26, MUTE_L, line=1.1)
+    circle_label(s, 1112, y, 80, INK, g, 24 if len(g) > 2 else 32, MARS, font=HEAD)
+    text(s, 1216, y, 576, 40, t, 32, INK, HEAD, bold=True)
+    text(s, 1216, y + 46, 576, 80, b, 26, MUTE_L, line=1.1)
 footer(s, FOOT, "04 / 07", True)
-notes(s, "Визуализация проекта + пользовательский опыт (пункты 4 и 6 из рекомендаций мануала). "
-         "Вставить скриншот игры вместо заглушки.")
+notes(s, "Визуализация проекта + пользовательский опыт. Скриншоты из рабочего прототипа (desktop 1920×1080 "
+         "и телефон). Интерфейс игры пока на русском — к финалу лучше переснять с английской версией. "
+         "Остальные скриншоты: Презентация/screenshots/.")
 
 # ---------- 5. data ----------
 s = new_slide(INK)
-head(s, "04 // REAL NASA DATA", "Real NASA data behind every event", False)
-rows = [("Dataset", "What it gives", "How we use it [draft]"),
-        ("NASA DONKI", "Solar flares and CMEs", "Triggers radiation storms the player must shield against"),
-        ("NASA OSDR", "Astronaut health and space biology studies",
-         "Explains what radiation and microgravity do to the crew"),
-        ("RadLab (OSDR)", "ISS radiation dose measurements", "Sets how fast crew dose grows without shielding"),
-        ("Mars Trek", "Mars terrain, imagery and elevation", "Real maps for choosing the outpost site"),
-        ("CSA · Food in space", "Growing food on the Moon", "Greenhouse mechanic and its power cost")]
-gt = s.shapes.add_table(len(rows), 3, E(128), E(300), E(1664), E(60 + 5 * 84))
+head(s, "04 // NASA SCIENCE", "Real science behind every event", False)
+rows = [("In the game", "What the player learns", "NASA / partner source"),
+        ("Solar storm · day 2", "The Moon has almost no atmosphere or magnetic field — shelters and space-weather "
+         "forecasts cut radiation risk", "NASA DONKI — solar flares, CMEs"),
+        ("Air leak · day 4", "Sealed modules isolate a leak; pressure control and reserves keep the crew alive",
+         "NASA OSDR — crew health in space"),
+        ("Ice signal · day 6", "Water ice may survive in permanently shadowed craters near the lunar poles",
+         "NASA Moon Trek — lunar south pole"),
+        ("Hydroponics module", "A greenhouse returns water and lifts crew morale in a closed habitat",
+         "CSA — food production in space"),
+        ("Crew health", "Low supplies hurt the crew; the medic role and rest restore health",
+         "RadLab (OSDR) — radiation dose")]
+gt = s.shapes.add_table(len(rows), 3, E(128), E(290), E(1664), E(60 + 5 * 92))
 gt.name = "NASA data table"
 tbl = gt.table
 tblPr = tbl._tbl.tblPr
 style = tblPr.find(qn("a:tableStyleId"))
 if style is not None:
     style.text = "{2D5ABB26-0587-4C30-8999-92F81FD0307C}"  # No Style, No Grid; fills set per cell
-for ci, wpx in enumerate([0.24, 0.32, 0.44]):
+for ci, wpx in enumerate([0.22, 0.48, 0.30]):
     tbl.columns[ci].width = E(1664 * wpx)
 for ri, row in enumerate(rows):
-    tbl.rows[ri].height = E(60 if ri == 0 else 84)
+    tbl.rows[ri].height = E(60 if ri == 0 else 92)
     for ci, val in enumerate(row):
         cell = tbl.cell(ri, ci)
         cell.fill.solid()
@@ -367,12 +377,13 @@ for ri, row in enumerate(rows):
         r.text = val
         r.font.size, r.font.name = Pt(13), (MONO if ri == 0 else BODY)
         r.font.bold = ri == 0 or ci == 0
-        r.font.color.rgb = rgb(MUTE if ri == 0 else MOON)
-text(s, 128, 830, 1664, 36, "Every data point is credited inside the game, so players know it is real NASA science.",
-     24, MUTE)
+        r.font.color.rgb = rgb(MUTE if ri == 0 else (TEAL if ci == 2 else MOON))
+text(s, 128, 870, 1664, 70, "Today the numbers are a simplified teaching model. Next step: live space weather from "
+     "NASA DONKI through our own API, so a real solar flare triggers the in-game storm.", 24, MUTE, line=1.15)
 footer(s, FOOT, "05 / 07", False)
-notes(s, "Данные NASA и партнёров из вкладки Resources челленджа. Колонка «How we use it» — черновик, "
-         "уточнить по факту реализации. Если данные встроены статикой, а не через живой API, так и сказать.")
+notes(s, "Честно: в коде пока нет живых данных NASA (README: «условная учебная модель»). Уроки в событиях "
+         "основаны на научных фактах; колонка источников — к чему привязываем факты и что подключим. "
+         "Если команда успеет подключить DONKI через apps/api — переписать нижнюю строку.")
 
 # ---------- 6. crew ----------
 s = new_slide(PAPER)
@@ -394,16 +405,16 @@ notes(s, "Команда: заменить «Photo» на фото (Формат
 s = new_slide(INK, BG_NEXT)
 head(s, "06 // NEXT MISSION", "Further plans", False)
 plans = [("TEST", "Playtest with kids at schools and clubs in Dnipro and collect feedback."),
-         ("UPGRADE", "More outposts and events, live space weather, a better design."),
-         ("IMPLEMENT", "A classroom mode for teachers and a mobile version.")]
+         ("UPGRADE", "Live NASA DONKI space weather in the game, more events and base modules."),
+         ("IMPLEMENT", "English version of the interface and a classroom mode for teachers.")]
 for i, (t, b) in enumerate(plans):
     x = 128 + i * (w + 32)
     box(s, x, 310, w, 220, INK2, line=LINE, line_w=1.5)
     text(s, x + 40, 346, w - 80, 32, t, 24, TEAL, MONO, bold=True, spacing=2)
     text(s, x + 40, 392, w - 80, 120, b, 26, MUTE, line=1.15)
 text(s, 128, 620, 1500, 90, "Thanks for listening!", 72, MARS, HEAD, bold=True)
-text(s, 128, 730, 1500, 70, "Sources: NASA DONKI · NASA OSDR · RadLab · Mars Trek · CSA Space Resources · "
-     "[full links: project page]", 24, MUTE, line=1.15)
+text(s, 128, 730, 1500, 70, "Sources: NASA DONKI · NASA OSDR · RadLab · NASA Moon Trek · CSA Space Resources · "
+     "github.com/aleexxeyy/lunar-ops", 24, MUTE, line=1.15)
 footer(s, "[team@email.com]", "07 / 07", False)
 notes(s, "Планы (Test / Upgrade / Implement, как в прошлой презентации), источники и благодарность. "
          "Лимит мануала: максимум 7 слайдов на английском — это последний.")

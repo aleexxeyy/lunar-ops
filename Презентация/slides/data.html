@@ -1,17 +1,17 @@
 <section id="data" data-transition="fade">
 <div class="head rise" style="--i:0">
-<p class="eyebrow">04 // REAL NASA DATA</p>
-<h2>Real NASA data behind every event</h2>
+<p class="eyebrow">04 // NASA SCIENCE</p>
+<h2>Real science behind every event</h2>
 </div>
 <table class="data-table rise" style="--i:1">
-<tr><th style="width:24%">Dataset</th><th style="width:32%">What it gives</th><th style="width:44%">How we use it [draft]</th></tr>
-<tr><td>NASA DONKI</td><td>Solar flares and CMEs</td><td>Triggers radiation storms the player must shield against</td></tr>
-<tr><td>NASA OSDR</td><td>Astronaut health and space biology studies</td><td>Explains what radiation and microgravity do to the crew</td></tr>
-<tr><td>RadLab (OSDR)</td><td>ISS radiation dose measurements</td><td>Sets how fast crew dose grows without shielding</td></tr>
-<tr><td>Mars Trek</td><td>Mars terrain, imagery and elevation</td><td>Real maps for choosing the outpost site</td></tr>
-<tr><td>CSA · Food in space</td><td>Growing food on the Moon</td><td>Greenhouse mechanic and its power cost</td></tr>
+<tr><th style="width:22%">In the game</th><th style="width:48%">What the player learns</th><th style="width:30%">NASA / partner source</th></tr>
+<tr><td>Solar storm · day 2</td><td>The Moon has almost no atmosphere or magnetic field — shelters and space-weather forecasts cut radiation risk</td><td>NASA DONKI — solar flares, CMEs</td></tr>
+<tr><td>Air leak · day 4</td><td>Sealed modules isolate a leak; pressure control and reserves keep the crew alive</td><td>NASA OSDR — crew health in space</td></tr>
+<tr><td>Ice signal · day 6</td><td>Water ice may survive in permanently shadowed craters near the lunar poles</td><td>NASA Moon Trek — lunar south pole</td></tr>
+<tr><td>Hydroponics module</td><td>A greenhouse returns water and lifts crew morale in a closed habitat</td><td>CSA — food production in space</td></tr>
+<tr><td>Crew health</td><td>Low supplies hurt the crew; the medic role and rest restore health</td><td>RadLab (OSDR) — radiation dose</td></tr>
 </table>
-<p class="note rise" style="--i:2">Every data point is credited inside the game, so players know it is real NASA science.</p>
+<p class="note rise" style="--i:2">Today the numbers are a simplified teaching model. Next step: live space weather from NASA DONKI through our own API, so a real solar flare triggers the in-game storm.</p>
 <div class="foot"><p>NASA SPACE APPS · DNIPRO 2026</p><p>05 / 07</p></div>
-<aside>Данные NASA и партнёров из вкладки Resources челленджа. Колонка «How we use it» — черновик, уточнить по факту реализации. Если данные встроены статикой, а не через живой API, так и сказать.</aside>
+<aside>Честно: в коде пока нет живых данных NASA (README игры: «условная учебная модель»). Уроки в событиях основаны на научных фактах; колонка источников — к чему привязываем факты и что подключим. Если успеем подключить DONKI через apps/api — переписать нижнюю строку.</aside>
 </section>
