@@ -28,7 +28,7 @@ export function EffectBadges({ effect }: { effect: Effect }) {
         </span>
       )}
       {effect.health !== undefined && (
-        <span className="gain">HP +{effect.health}</span>
+        <span className="gain">ОЗ +{effect.health}</span>
       )}
     </span>
   );
@@ -46,7 +46,7 @@ export function ResourceCards() {
             key={key}
             className={`resource-card ${critical ? "critical" : ""}`}
             onClick={() => openDialog({ type: "resource", resource: key })}
-            aria-label={`${meta.name}: ${mission.resources[key]}%. Открыть телеметрию`}
+            aria-label={`${meta.name}: ${mission.resources[key]}%. Відкрити телеметрію`}
           >
             <div className="resource-title">
               <span>
@@ -62,7 +62,7 @@ export function ResourceCards() {
               {mission.resources[key]}
               <span>%</span>
               <small className={critical ? "text-danger" : ""}>
-                {critical ? "КРИТИЧЕСКИ" : "ЗАПАС"}
+                {critical ? "КРИТИЧНО" : "ЗАПАС"}
               </small>
             </div>
             <div className="meter">
@@ -79,7 +79,7 @@ export function ResourceCards() {
                 {mission.forecast[key]} / день
               </span>
               <span>
-                {critical ? "Требует внимания" : "Телеметрия"}
+                {critical ? "Потребує уваги" : "Телеметрія"}
                 <Icon name="chevron" size={12} />
               </span>
             </div>
@@ -99,16 +99,16 @@ export function MissionBrief() {
       <div className="panel-heading">
         <div>
           <span className="eyebrow">
-            {event ? "PRIORITY TRANSMISSION" : "MISSION PROTOCOL"}
+            {event ? "ТЕРМІНОВЕ ПОВІДОМЛЕННЯ" : "ПРОТОКОЛ МІСІЇ"}
           </span>
-          <h2>{event ? "Входящий сигнал" : "Задача экспедиции"}</h2>
+          <h2>{event ? "Вхідний сигнал" : "Завдання експедиції"}</h2>
         </div>
         <Icon name={event ? "warning" : "target"} size={23} />
       </div>
       {event ? (
         <div className="event-content">
           <span className="event-label">
-            ТРЕБУЕТСЯ РЕШЕНИЕ · ДЕНЬ {mission.day}
+            ПОТРІБНЕ РІШЕННЯ · ДЕНЬ {mission.day}
           </span>
           <h3>{event.title}</h3>
           <p>{event.description}</p>
@@ -141,24 +141,24 @@ export function MissionBrief() {
         <>
           <div className="brief-title">
             <span className="mission-number">
-              01<span>/ LUNAR EXPEDITION</span>
+              01<span>/ МІСЯЧНА ЕКСПЕДИЦІЯ</span>
             </span>
             <h3>
-              Построить будущее.
+              Побудувати майбутнє.
               <br />
-              <span>Сохранить экипаж.</span>
+              <span>Зберегти екіпаж.</span>
             </h3>
             <p>
-              Продержитесь {config.duration} дней на Луне и соберите{" "}
-              {config.scienceTarget} научных данных. Ресурсы ограничены. Решения
-              — за вами.
+              Протримайтеся {config.duration} днів на Місяці та здобудьте{" "}
+              {config.scienceTarget} наукових балів. Ресурси обмежені. Рішення —
+              за вами.
             </p>
           </div>
           <div className="objective">
             <div>
               <span>
                 <Icon name="science" size={16} />
-                Научные данные
+                Наукові дані
               </span>
               <strong>
                 {mission.science}
@@ -177,7 +177,7 @@ export function MissionBrief() {
             <div>
               <span>
                 <Icon name="clock" size={16} />
-                Пройдено дней
+                Минуло днів
               </span>
               <strong>
                 {mission.completedDays}
@@ -195,7 +195,7 @@ export function MissionBrief() {
           </div>
           <div className="brief-note">
             <Icon name="signal" size={16} />
-            <span>Следите за прогнозом расхода перед завершением дня.</span>
+            <span>Стежте за прогнозом споживання перед завершенням дня.</span>
           </div>
         </>
       )}
@@ -216,8 +216,8 @@ export function Operations() {
     <section className="panel operations-panel">
       <div className="panel-heading">
         <div>
-          <span className="eyebrow">COMMAND QUEUE</span>
-          <h2>Операции</h2>
+          <span className="eyebrow">ЧЕРГА КОМАНД</span>
+          <h2>Операції</h2>
         </div>
         <span className="count-badge">
           {mission.actionsRemaining} / {config.actionsPerDay} ДОСТУПНО
@@ -242,7 +242,7 @@ export function Operations() {
               <EffectBadges effect={mission.actionEffects[action.id]} />
               <small>
                 {mission.availableActions[action.id].reason ??
-                  "1 операция · выполнить"}
+                  "1 операція · виконати"}
               </small>
             </span>
             <Icon
@@ -271,8 +271,8 @@ export function ModuleList() {
     <section className="panel">
       <div className="panel-heading">
         <div>
-          <span className="eyebrow">HABITAT SYSTEMS</span>
-          <h2>Модули станции</h2>
+          <span className="eyebrow">СИСТЕМИ БАЗИ</span>
+          <h2>Модулі станції</h2>
         </div>
         <span className="count-badge">
           <Icon name="parts" size={14} />
@@ -287,7 +287,7 @@ export function ModuleList() {
             </div>
             <div className="module-copy">
               <span className="micro">
-                {module.code} / УРОВЕНЬ {mission.modules[module.id]}
+                {module.code} / РІВЕНЬ {mission.modules[module.id]}
               </span>
               <h3>{module.name}</h3>
               <p>{module.description}</p>
@@ -310,12 +310,12 @@ export function ModuleList() {
                   void send({ type: "upgrade", moduleId: module.id })
                 }
               >
-                Улучшить
+                Поліпшити
                 <Icon name="arrowUp" size={16} />
               </button>
               <small>
                 {mission.upgrades[module.id].reason ??
-                  `${mission.upgrades[module.id].cost} деталей · ${config.upgrade.energyCost} энергии · 1 операция`}
+                  `${mission.upgrades[module.id].cost} деталей · ${config.upgrade.energyCost} енергії · 1 операція`}
               </small>
             </div>
           </article>
@@ -331,12 +331,12 @@ export function CrewList({ compact = false }: { compact?: boolean }) {
     <section className={`panel ${compact ? "compact-crew" : ""}`}>
       <div className="panel-heading">
         <div>
-          <span className="eyebrow">HUMAN SYSTEMS</span>
-          <h2>Экипаж</h2>
+          <span className="eyebrow">ЕКІПАЖ СТАНЦІЇ</span>
+          <h2>Екіпаж</h2>
         </div>
         {compact ? (
           <button className="text-button" onClick={() => navigate("crew")}>
-            Управление
+            Керування
             <Icon name="arrow" size={15} />
           </button>
         ) : (
@@ -390,7 +390,7 @@ export function CrewList({ compact = false }: { compact?: boolean }) {
                 }
               >
                 {member.health}
-                <small> HP</small>
+                <small> ОЗ</small>
               </span>
               <div className="meter">
                 <span style={{ width: `${member.health}%` }} />
@@ -403,7 +403,7 @@ export function CrewList({ compact = false }: { compact?: boolean }) {
                     openDialog({ type: "crew", crewId: member.id })
                   }
                 >
-                  Назначить роль
+                  Призначити роль
                   <Icon name="arrowUp" size={14} />
                 </button>
               )}
@@ -437,18 +437,18 @@ export function Journal({ compact = false }: { compact?: boolean }) {
     <section className="panel journal-panel">
       <div className="panel-heading">
         <div>
-          <span className="eyebrow">MISSION LOG</span>
-          <h2>{compact ? "Последние сообщения" : "Журнал миссии"}</h2>
+          <span className="eyebrow">ЖУРНАЛ МІСІЇ</span>
+          <h2>{compact ? "Останні повідомлення" : "Журнал місії"}</h2>
         </div>
         {compact ? (
           <button className="text-button" onClick={() => navigate("journal")}>
-            Все записи
+            Усі записи
             <Icon name="arrow" size={15} />
           </button>
         ) : (
           <button className="button secondary" onClick={download}>
             <Icon name="download" size={16} />
-            Экспорт JSON
+            Експорт JSON
           </button>
         )}
       </div>
@@ -461,7 +461,7 @@ export function Journal({ compact = false }: { compact?: boolean }) {
               onClick={() => setFilter(key)}
               aria-pressed={filter === key}
             >
-              {{ all: "Все записи", event: "События", action: "Операции" }[key]}
+              {{ all: "Усі записи", event: "Події", action: "Операції" }[key]}
             </button>
           ))}
         </div>
@@ -470,7 +470,7 @@ export function Journal({ compact = false }: { compact?: boolean }) {
         {(compact ? entries.slice(0, 3) : entries).map((entry) => (
           <div className={`log-entry log-${entry.kind}`} key={entry.id}>
             <span className="log-time">
-              D{entry.day.toString().padStart(2, "0")}
+              Д{entry.day.toString().padStart(2, "0")}
               <small>#{entry.id.toString().padStart(3, "0")}</small>
             </span>
             <i />
@@ -479,7 +479,7 @@ export function Journal({ compact = false }: { compact?: boolean }) {
         ))}
         {entries.length === 0 && (
           <p className="empty-message">
-            Записей пока нет. Выполняйте операции и продвигайтесь по миссии.
+            Записів поки немає. Виконуйте операції та просувайтеся місією.
           </p>
         )}
       </div>

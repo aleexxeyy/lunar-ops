@@ -6,7 +6,7 @@ const Chart = lazy(() => import("./ResourceChart"));
 export function ResourceChart({ resource }: { resource: ResourceKey }) {
   return (
     <Suspense
-      fallback={<div className="chart" aria-label="???????? ??????????" />}
+      fallback={<div className="chart" aria-label="Завантаження телеметрії" />}
     >
       <Chart resource={resource} />
     </Suspense>
@@ -19,10 +19,10 @@ export function Telemetry() {
     <section className="panel telemetry-panel">
       <div className="panel-heading">
         <div>
-          <span className="eyebrow">RESOURCE MONITOR</span>
-          <h2>Телеметрия</h2>
+          <span className="eyebrow">МОНІТОРИНГ РЕСУРСІВ</span>
+          <h2>Телеметрія</h2>
         </div>
-        <span className="micro">НА КОНЕЦ ДНЯ</span>
+        <span className="micro">НА КІНЕЦЬ ДНЯ</span>
       </div>
       <div className="chart-legend">
         {(Object.keys(resourceLabels) as ResourceKey[]).map((key) => (

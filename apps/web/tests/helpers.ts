@@ -23,7 +23,7 @@ export async function act(
       : target;
   await button.click();
   expect((await response).status()).toBe(201);
-  await expect(page.locator(".connection")).toContainText("КАНАЛ АКТИВЕН");
+  await expect(page.locator(".connection")).toContainText("КАНАЛ АКТИВНИЙ");
 }
 
 export async function go(page: Page, name: string): Promise<void> {

@@ -18,7 +18,7 @@ export default function ResourceChart({ resource }: { resource: ResourceKey }) {
     <div
       className="chart"
       role="img"
-      aria-label={`История: ${resourceLabels[resource].name}. ${history.map((p) => `День ${p.day}: ${p[resource]}%`).join("; ")}`}
+      aria-label={`Історія: ${resourceLabels[resource].name}. ${history.map((p) => `День ${p.day}: ${p[resource]}%`).join("; ")}`}
     >
       <ResponsiveContainer width="100%" height="100%" minWidth={0}>
         <LineChart
@@ -33,7 +33,7 @@ export default function ResourceChart({ resource }: { resource: ResourceKey }) {
           <XAxis
             dataKey="day"
             tickFormatter={(day: number) =>
-              `D${day.toString().padStart(2, "0")}`
+              `Д${day.toString().padStart(2, "0")}`
             }
             tick={{ fill: "#71868c", fontSize: 10 }}
             tickLine={false}

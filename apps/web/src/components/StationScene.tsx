@@ -12,22 +12,22 @@ export function StationScene() {
     <section className="panel scene-panel">
       <div className="panel-heading">
         <div>
-          <span className="eyebrow">LIVE FEED / SECTOR 07</span>
+          <span className="eyebrow">ТРАНСЛЯЦІЯ / СЕКТОР 07</span>
           <h2>База «Горизонт»</h2>
         </div>
         <span className="live-badge">
           <i />
-          {connection === "online" ? "В СЕТИ" : "НЕТ СВЯЗИ"}
+          {connection === "online" ? "НА ЗВ’ЯЗКУ" : "НЕМАЄ ЗВ’ЯЗКУ"}
         </span>
       </div>
-      <div className="scene-tabs" aria-label="Вид базы">
+      <div className="scene-tabs" aria-label="Вигляд бази">
         <button
           className={mode === "surface" ? "selected" : ""}
           onClick={() => setMode("surface")}
           aria-pressed={mode === "surface"}
         >
           <Icon name="station" size={14} />
-          Поверхность
+          Поверхня
         </button>
         <button
           className={mode === "orbit" ? "selected" : ""}
@@ -35,7 +35,7 @@ export function StationScene() {
           aria-pressed={mode === "orbit"}
         >
           <Icon name="globe" size={14} />
-          Орбита
+          Орбіта
         </button>
       </div>
       <div className={`station-visual ${mode}`}>
@@ -45,8 +45,8 @@ export function StationScene() {
           role="img"
           aria-label={
             mode === "surface"
-              ? "Изометрическая схема лунной базы и её модулей"
-              : "Орбитальная схема Луны и положение базы у южного полюса"
+              ? "Ізометрична схема місячної бази та її модулів"
+              : "Орбітальна схема Місяця та розташування бази біля південного полюса"
           }
         >
           <defs>
@@ -221,7 +221,7 @@ export function StationScene() {
                   89°54′ S / 00°00′ E
                 </text>
                 <text x="578" y="371">
-                  ALT +1,420 M
+                  ВИС. +1 420 М
                 </text>
               </g>
             </>
@@ -279,7 +279,7 @@ export function StationScene() {
                 fontSize="11"
                 fill="#b3ff86"
               >
-                HORIZON / SOUTH POLE
+                ГОРИЗОНТ / ПІВДЕННИЙ ПОЛЮС
               </text>
               <g
                 transform="translate(598 119) rotate(-20)"
@@ -297,10 +297,10 @@ export function StationScene() {
             <button
               className="map-label solar-label"
               onClick={() => openDialog({ type: "module", moduleId: "solar" })}
-              aria-label="Солнечный массив: детали модуля"
+              aria-label="Сонячні панелі: деталі модуля"
             >
               <i />
-              PWR-01 <span>LVL {mission.modules.solar}</span>
+              PWR-01 <span>РІВ. {mission.modules.solar}</span>
               <Icon name="arrowUp" size={12} />
             </button>
             <button
@@ -308,10 +308,10 @@ export function StationScene() {
               onClick={() =>
                 openDialog({ type: "module", moduleId: "laboratory" })
               }
-              aria-label="Научная лаборатория: детали модуля"
+              aria-label="Наукова лабораторія: деталі модуля"
             >
               <i />
-              SCI-04 <span>LVL {mission.modules.laboratory}</span>
+              SCI-04 <span>РІВ. {mission.modules.laboratory}</span>
               <Icon name="arrowUp" size={12} />
             </button>
             <button
@@ -319,10 +319,10 @@ export function StationScene() {
               onClick={() =>
                 openDialog({ type: "module", moduleId: "recycler" })
               }
-              aria-label="Система жизнеобеспечения: детали модуля"
+              aria-label="Система життєзабезпечення: деталі модуля"
             >
               <i />
-              LSS-02 <span>LVL {mission.modules.recycler}</span>
+              LSS-02 <span>РІВ. {mission.modules.recycler}</span>
               <Icon name="arrowUp" size={12} />
             </button>
             <button
@@ -330,10 +330,10 @@ export function StationScene() {
               onClick={() =>
                 openDialog({ type: "module", moduleId: "greenhouse" })
               }
-              aria-label="Гидропонный отсек: детали модуля"
+              aria-label="Гідропонний відсік: деталі модуля"
             >
               <i />
-              BIO-03 <span>LVL {mission.modules.greenhouse}</span>
+              BIO-03 <span>РІВ. {mission.modules.greenhouse}</span>
               <Icon name="arrowUp" size={12} />
             </button>
           </>
@@ -344,10 +344,10 @@ export function StationScene() {
       <div className="scene-footer">
         <span>
           <i className="status-dot" />
-          Модулей на базе: {config.modules.length}
+          Модулів на базі: {config.modules.length}
         </span>
         <span>
-          ЮЖНЫЙ ПОЛЮС <Icon name="target" size={14} />
+          ПІВДЕННИЙ ПОЛЮС <Icon name="target" size={14} />
         </span>
       </div>
     </section>

@@ -32,7 +32,7 @@ export class MissionsService {
     const state = this.sessions.get(id);
     if (!state)
       throw new NotFoundException(
-        'Сессия не найдена. Возможно, сервер был перезапущен.',
+        'Сесію не знайдено. Можливо, сервер було перезапущено.',
       );
     return getMissionView(state);
   }
@@ -42,7 +42,7 @@ export class MissionsService {
     const current = this.sessions.get(id)!;
     if (current.revision !== request.revision)
       throw new ConflictException(
-        'Состояние изменилось в другой вкладке. Проверьте актуальные данные и повторите действие.',
+        'Стан змінився в іншій вкладці. Перевірте актуальні дані та повторіть дію.',
       );
     try {
       const state = executeCommand(current, request.command);

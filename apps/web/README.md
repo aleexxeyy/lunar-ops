@@ -1,32 +1,23 @@
-# React + TypeScript + Vite
+﻿# Lunar Ops — вебінтерфейс
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Український інтерфейс тренажера місячної місії на React і Vite. Zustand зберігає отриманий стан та керує взаємодією з API; Tailwind CSS, Recharts і Framer Motion відповідають за оформлення, графіки та анімацію.
 
-Currently, two official plugins are available:
+## Розробка
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Виконайте `pnpm install` і `pnpm dev` у корені репозиторію, щоб запустити інтерфейс разом з API та спільними пакетами. Vite зазвичай доступний за адресою http://localhost:5173 і проксіює `/api` на http://localhost:3000. Змінна `LUNAR_API_URL` дозволяє задати іншу адресу API.
 
-## React Compiler
+Інтерфейс відображає стан сервера та надсилає команди. Правила гри й розрахунки ресурсів містяться в `packages/game-core`, а баланс і сценарії — у `packages/game-config`.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Перевірки
 
-## Expanding the Oxlint configuration
+Команди виконуються з кореня репозиторію:
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```sh
+pnpm build
+pnpm --filter @lunar-ops/web typecheck
+pnpm --filter @lunar-ops/web test:e2e
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Браузерні тести Playwright перевіряють інтерфейс на комп’ютері та телефоні. Вони використовують встановлений Google Chrome; для Edge задайте `PLAYWRIGHT_CHANNEL=msedge`. Окремі тестові сервери займають порти 3100 і 5174.
+
+Інструкція з гри, архітектура та повний порядок перевірок описані в [головному README](../../README.md).

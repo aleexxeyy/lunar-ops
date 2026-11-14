@@ -24,36 +24,36 @@ const pages: {
 }[] = [
   {
     id: "overview",
-    name: "Командный центр",
+    name: "Командний центр",
     icon: "overview",
     code: "01",
-    title: "Командный центр",
-    subtitle: "Ваш мир за пределами Земли. Каждое решение имеет значение.",
+    title: "Командний центр",
+    subtitle: "Ваш світ за межами Землі. Кожне рішення має значення.",
   },
   {
     id: "station",
-    name: "Лунная база",
+    name: "Місячна база",
     icon: "station",
     code: "02",
-    title: "Системы станции",
-    subtitle: "Превратите хрупкий форпост в автономную лунную базу.",
+    title: "Системи станції",
+    subtitle: "Перетворіть крихкий форпост на автономну місячну базу.",
   },
   {
     id: "crew",
-    name: "Экипаж",
+    name: "Екіпаж",
     icon: "crew",
     code: "03",
-    title: "Люди за миссией",
+    title: "Команда місії",
     subtitle:
-      "Три специалиста. Одна команда. Назначайте роли и берегите здоровье.",
+      "Троє фахівців. Одна команда. Призначайте ролі та бережіть здоров’я.",
   },
   {
     id: "journal",
-    name: "Журнал миссии",
+    name: "Журнал місії",
     icon: "journal",
     code: "04",
-    title: "Хроника экспедиции",
-    subtitle: "Каждое решение, событие и открытие — в истории вашей миссии.",
+    title: "Хроніка експедиції",
+    subtitle: "Кожне рішення, подія та відкриття — в історії вашої місії.",
   },
 ];
 function App() {
@@ -106,29 +106,29 @@ function App() {
             document.getElementById("main-content")?.focus();
           }}
         >
-          К содержимому
+          До вмісту
         </a>
         <aside className="sidebar">
           <button
             className="brand"
             onClick={() => navigate("overview")}
-            aria-label="Lunar Ops — командный центр"
+            aria-label="Lunar Ops — командний центр"
           >
             <span className="brand-mark">
               <Icon name="moon" size={26} />
             </span>
             <span>
               LUNAR<span className="brand-light">OPS</span>
-              <small>MISSION CONTROL SYSTEM</small>
+              <small>СИСТЕМА КЕРУВАННЯ МІСІЄЮ</small>
             </span>
             <span className="brand-pixel" />
           </button>
           <div className="workspace-label">
             <span className="status-dot" />
-            ЭКСПЕДИЦИЯ / HORIZON-01
+            ЕКСПЕДИЦІЯ / HORIZON-01
           </div>
-          <span className="nav-label">НАВИГАЦИЯ</span>
-          <nav aria-label="Основная навигация">
+          <span className="nav-label">НАВІГАЦІЯ</span>
+          <nav aria-label="Основна навігація">
             {pages.map((item) => (
               <button
                 className={`nav-item ${page === item.id ? "active" : ""}`}
@@ -148,13 +148,13 @@ function App() {
           </nav>
           <div className="sidebar-bottom">
             <div className="cadet-card">
-              <span className="micro">JUNIOR ASTRONAUT PROGRAM</span>
+              <span className="micro">ПРОГРАМА ЮНИХ АСТРОНАВТІВ</span>
               <div className="orbit-emblem">
                 <Icon name="globe" size={38} />
                 <span>✦</span>
               </div>
-              <strong>Земля — только начало.</strong>
-              <p>Исследуй. Решай. Выживай.</p>
+              <strong>Земля — лише початок.</strong>
+              <p>Досліджуй. Вирішуй. Виживай.</p>
               <span className="program-label">SPACE APPS CHALLENGE 2026</span>
             </div>
             <button
@@ -168,14 +168,14 @@ function App() {
             </button>
             <div className="sidebar-version">
               <span>LUNAR OS v.1.0</span>
-              <span>● SIMULATION</span>
+              <span>● СИМУЛЯЦІЯ</span>
             </div>
           </div>
         </aside>
         <div className="main-shell">
           <header className="topbar">
             <div className="breadcrumb">
-              ЦЕНТР УПРАВЛЕНИЯ<span>/</span>
+              ЦЕНТР КЕРУВАННЯ<span>/</span>
               <strong>{activePage.name}</strong>
             </div>
             <div className="topbar-right">
@@ -184,24 +184,24 @@ function App() {
               >
                 <i />
                 {busy
-                  ? "СИНХРОНИЗАЦИЯ"
+                  ? "СИНХРОНІЗАЦІЯ"
                   : connection === "offline"
-                    ? "ПРОВЕРЬТЕ СВЯЗЬ"
+                    ? "ПЕРЕВІРТЕ ЗВ’ЯЗОК"
                     : mission
-                      ? "КАНАЛ АКТИВЕН"
-                      : "ПОДКЛЮЧЕНИЕ"}
+                      ? "КАНАЛ АКТИВНИЙ"
+                      : "ПІДКЛЮЧЕННЯ"}
               </span>
               <span className="topbar-divider" />
               <button
                 className="icon-button"
                 onClick={() => openDialog({ type: "help" })}
-                aria-label="Как играть"
+                aria-label="Як грати"
                 disabled={!mission}
               >
                 <Icon name="help" size={19} />
               </button>
               <span className="commander-avatar">
-                C<span />
+                К<span />
               </span>
               <div className="commander-label">
                 <strong>Командир</strong>
@@ -217,8 +217,8 @@ function App() {
             <div className="page-heading">
               <div>
                 <div className="eyebrow">
-                  <span className="accent">LUNAR OPERATIONS</span>
-                  <span className="slash">//</span>MISSION DASHBOARD
+                  <span className="accent">МІСЯЧНІ ОПЕРАЦІЇ</span>
+                  <span className="slash">//</span>ПАНЕЛЬ МІСІЇ
                 </div>
                 <h1>
                   {activePage.title}
@@ -232,7 +232,7 @@ function App() {
                 disabled={!mission || busy}
               >
                 <Icon name="restart" size={16} />
-                Новая миссия
+                Нова місія
               </button>
             </div>
             {error && (
@@ -246,7 +246,9 @@ function App() {
                     connection === "offline" ? void initialize() : clearError()
                   }
                 >
-                  {connection === "offline" ? "Переподключить" : "Понятно"}
+                  {connection === "offline"
+                    ? "Підключитися знову"
+                    : "Зрозуміло"}
                 </button>
               </div>
             )}
@@ -255,16 +257,16 @@ function App() {
                 <div className={`loading-orbit ${error ? "paused" : ""}`}>
                   <Icon name="moon" size={40} />
                 </div>
-                <span className="eyebrow">ESTABLISHING UPLINK</span>
+                <span className="eyebrow">ВСТАНОВЛЕННЯ ЗВ’ЯЗКУ</span>
                 <h2>
                   {error
-                    ? "Ожидаем связь с базой"
-                    : "Подключение к «Горизонту»"}
+                    ? "Очікуємо на зв’язок із базою"
+                    : "Підключення до «Горизонту»"}
                 </h2>
                 <p>
                   {error
-                    ? "Связь с центром управления прервана. Повторите подключение через несколько секунд."
-                    : "Получаем состояние станции и проверяем канал управления…"}
+                    ? "Зв’язок із центром керування перервано. Спробуйте підключитися знову за кілька секунд."
+                    : "Отримуємо стан станції та перевіряємо канал керування…"}
                 </p>
               </div>
             ) : (
@@ -275,7 +277,7 @@ function App() {
                       <Icon name="globe" size={23} />
                     </span>
                     <div>
-                      <span className="micro">АКТИВНАЯ ЭКСПЕДИЦИЯ</span>
+                      <span className="micro">АКТИВНА ЕКСПЕДИЦІЯ</span>
                       <strong>
                         HORIZON<span>—</span>01
                       </strong>
@@ -285,10 +287,10 @@ function App() {
                     >
                       <i />
                       {mission.status === "active"
-                        ? "МИССИЯ В ПРОЦЕССЕ"
+                        ? "МІСІЯ ТРИВАЄ"
                         : mission.status === "won"
-                          ? "ЦЕЛЬ ДОСТИГНУТА"
-                          : "МИССИЯ ЗАВЕРШЕНА"}
+                          ? "МЕТИ ДОСЯГНУТО"
+                          : "МІСІЮ ЗАВЕРШЕНО"}
                     </span>
                   </div>
                   <div className="day-control">
@@ -304,11 +306,11 @@ function App() {
                       disabled={blocked || !mission.canAdvance.available}
                       title={
                         mission.canAdvance.reason ??
-                        `Завершить день. Осталось операций: ${mission.actionsRemaining}`
+                        `Завершити день. Залишилося операцій: ${mission.actionsRemaining}`
                       }
                       onClick={() => void send({ type: "advance" })}
                     >
-                      {busy ? "Обработка…" : "Завершить день"}
+                      {busy ? "Обробка…" : "Завершити день"}
                       <Icon name="arrow" size={17} />
                     </button>
                   </div>
@@ -325,8 +327,8 @@ function App() {
                     <div>
                       <h2>
                         {mission.status === "won"
-                          ? "Миссия выполнена, командир."
-                          : "Экспедиция завершена."}
+                          ? "Місію виконано, командире."
+                          : "Експедицію завершено."}
                       </h2>
                       <p>{mission.outcome}</p>
                     </div>
@@ -334,7 +336,7 @@ function App() {
                       className="button secondary"
                       onClick={() => openDialog({ type: "restart" })}
                     >
-                      Следующий полёт
+                      Наступний політ
                       <Icon name="arrow" size={16} />
                     </button>
                   </div>
@@ -345,9 +347,9 @@ function App() {
                     onClick={() => navigate("overview")}
                   >
                     <Icon name="warning" size={18} />
-                    Требуется решение: {mission.pendingEvent.title}
+                    Потрібне рішення: {mission.pendingEvent.title}
                     <span>
-                      Открыть сигнал
+                      Відкрити сигнал
                       <Icon name="arrow" size={16} />
                     </span>
                   </button>
@@ -381,11 +383,11 @@ function App() {
                       <div className="crew-page">
                         <CrewList />
                         <section className="panel crew-guidance">
-                          <span className="eyebrow">CREW WELLBEING</span>
-                          <h2>Команда — главный ресурс.</h2>
+                          <span className="eyebrow">СТАН ЕКІПАЖУ</span>
+                          <h2>Команда — головний ресурс.</h2>
                           <p>
-                            Назначайте роли по потребностям базы. Эффекты
-                            нескольких специалистов одной роли складываются.
+                            Призначайте ролі відповідно до потреб бази. Ефекти
+                            кількох фахівців з однаковою роллю додаються.
                           </p>
                           {Object.entries(config.roles).map(([key, role]) => (
                             <div className="role-guide" key={key}>
@@ -405,14 +407,14 @@ function App() {
                             </div>
                           ))}
                           <p>
-                            Низкие запасы снижают здоровье. Используйте отдых
-                            экипажа и помощь медика.
+                            Низькі запаси погіршують здоров’я. Використовуйте
+                            відпочинок екіпажу та допомогу медика.
                           </p>
                           <button
                             className="button secondary"
                             onClick={() => navigate("overview")}
                           >
-                            Перейти к операциям
+                            Перейти до операцій
                             <Icon name="arrow" size={16} />
                           </button>
                         </section>
@@ -424,10 +426,10 @@ function App() {
                 <footer className="page-footer">
                   <span>
                     <Icon name="signal" size={13} />
-                    УЧЕБНАЯ СИМУЛЯЦИЯ · НЕ ОПЕРАТИВНЫЕ ДАННЫЕ NASA
+                    НАВЧАЛЬНА СИМУЛЯЦІЯ · НЕ ОПЕРАТИВНІ ДАНІ NASA
                   </span>
                   <span>
-                    AD ASTRA, ONE DECISION AT A TIME.
+                    ДО ЗІРОК — РІШЕННЯ ЗА РІШЕННЯМ.
                     <i />
                   </span>
                 </footer>
@@ -448,7 +450,7 @@ function App() {
               <span>{notice}</span>
               <button
                 className="icon-button"
-                aria-label="Закрыть уведомление"
+                aria-label="Закрити сповіщення"
                 onClick={clearNotice}
               >
                 <Icon name="close" size={16} />

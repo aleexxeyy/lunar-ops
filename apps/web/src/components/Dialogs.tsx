@@ -43,12 +43,12 @@ export function Dialogs() {
     dialog?.type === "help"
       ? "Протокол командира"
       : dialog?.type === "restart"
-        ? "Новая экспедиция"
+        ? "Нова експедиція"
         : dialog?.type === "resource"
           ? resourceLabels[dialog.resource].name
           : module
             ? module.name
-            : `Назначение / ${member?.callsign ?? ""}`;
+            : `Призначення / ${member?.callsign ?? ""}`;
   return (
     <dialog
       ref={ref}
@@ -62,10 +62,10 @@ export function Dialogs() {
     >
       <div className="dialog-content">
         <div className="dialog-heading">
-          <span className="eyebrow">LUNAR OPS / TERMINAL</span>
+          <span className="eyebrow">LUNAR OPS / ТЕРМІНАЛ</span>
           <button
             className="icon-button"
-            aria-label="Закрыть диалог"
+            aria-label="Закрити діалог"
             onClick={() => openDialog(null)}
           >
             <Icon name="close" />
@@ -75,45 +75,45 @@ export function Dialogs() {
         {dialog?.type === "help" && (
           <div className="help-content">
             <p>
-              Вы командуете учебной базой у южного полюса Луны. Цель — сохранить
-              экипаж на протяжении {config.duration} дней и накопить минимум{" "}
-              {config.scienceTarget} научных данных.
+              Ви командуєте навчальною базою біля південного полюса Місяця. Мета
+              — зберегти екіпаж протягом {config.duration} днів і набрати
+              щонайменше {config.scienceTarget} наукових балів.
             </p>
             <ol>
               <li>
-                <strong>Выберите операции.</strong> На день доступны{" "}
-                {config.actionsPerDay} операции. Исследование приносит науку,
-                обслуживание пополняет ресурсы, отдых восстанавливает экипаж.
+                <strong>Виберіть операції.</strong> На день доступні{" "}
+                {config.actionsPerDay} операції. Дослідження дають наукові бали,
+                обслуговування поповнює ресурси, а відпочинок відновлює екіпаж.
               </li>
               <li>
-                <strong>Развивайте базу.</strong> Улучшения модулей расходуют
-                детали, энергию и одну операцию. Назначения экипажа определяют
-                ежедневные бонусы.
+                <strong>Розвивайте базу.</strong> Поліпшення модулів витрачають
+                деталі, енергію та одну операцію. Ролі екіпажу визначають
+                щоденні бонуси.
               </li>
               <li>
-                <strong>Завершите день.</strong> Сервер рассчитает потребление и
-                производство. Прогноз под каждым ресурсом уже учитывает модули,
-                роли и сложность.
+                <strong>Завершіть день.</strong> Система розрахує споживання та
+                виробництво. Прогноз під кожним ресурсом уже враховує модулі,
+                ролі та складність.
               </li>
               <li>
-                <strong>Принимайте решения.</strong> Событие блокирует обычные
-                команды, пока вы не выберете ответ. Последствия и объяснения
-                попадут в журнал.
+                <strong>Ухвалюйте рішення.</strong> Подія блокує звичайні
+                команди, доки ви не виберете відповідь. Наслідки та пояснення
+                з’являться в журналі.
               </li>
             </ol>
             <div className="info-box">
-              Запас ниже {config.criticalThreshold}% снижает здоровье экипажа на{" "}
-              {config.criticalHealthLoss} в конце дня. Нулевой ресурс или
-              здоровье приводят к эвакуации.
+              Запас нижче {config.criticalThreshold}% знижує здоров’я екіпажу на{" "}
+              {config.criticalHealthLoss} наприкінці дня. Якщо будь-який ресурс
+              або здоров’я вичерпано, екіпаж евакуюють.
             </div>
             <p className="muted">
-              Это условная учебная модель. События и телеметрия симулируются, а
-              игровые дни не соответствуют длительности реальных лунных суток.
-              Сессия хранится в памяти сервера и доступна после обновления
-              страницы до перезапуска API.
+              Це умовна навчальна модель. Події та телеметрія симулюються, а
+              ігрові дні не відповідають тривалості справжньої місячної доби.
+              Сесія зберігається в пам’яті сервера й доступна після оновлення
+              сторінки до перезапуску API.
             </p>
             <button className="button primary" onClick={() => openDialog(null)}>
-              Принять командование
+              Прийняти командування
               <Icon name="arrow" size={17} />
             </button>
           </div>
@@ -121,7 +121,7 @@ export function Dialogs() {
         {dialog?.type === "restart" && (
           <>
             <p>
-              Текущая миссия будет заменена новой. Выберите уровень подготовки.
+              Поточну місію буде замінено новою. Виберіть рівень підготовки.
             </p>
             <div className="difficulty-options">
               {(["cadet", "commander"] as const).map((key) => (
@@ -145,7 +145,7 @@ export function Dialogs() {
               disabled={busy}
               onClick={() => void start(difficulty)}
             >
-              {busy ? "Подготовка…" : "Запустить экспедицию"}
+              {busy ? "Підготовка…" : "Розпочати експедицію"}
               <Icon name="arrow" size={17} />
             </button>
           </>
@@ -168,8 +168,8 @@ export function Dialogs() {
             </div>
             <ResourceChart resource={dialog.resource} />
             <p className="muted">
-              График показывает запас при посадке и на конец каждого
-              завершённого дня.
+              Графік показує запас під час посадки та наприкінці кожного
+              завершеного дня.
             </p>
             <ResourceActions resource={dialog.resource} />
           </>
@@ -177,8 +177,8 @@ export function Dialogs() {
         {dialog?.type === "crew" && member && (
           <>
             <p>
-              Роль определяет вклад участника в конце дня. Переназначение не
-              расходует операции.
+              Роль визначає внесок учасника наприкінці дня. Зміна ролі не
+              витрачає операції.
             </p>
             <div className="difficulty-options">
               {(Object.keys(config.roles) as CrewRole[]).map((role) => (
@@ -207,12 +207,12 @@ export function Dialogs() {
         {dialog?.type === "module" && module && (
           <>
             <span className="eyebrow">
-              {module.code} / УРОВЕНЬ {mission.modules[module.id]}
+              {module.code} / РІВЕНЬ {mission.modules[module.id]}
             </span>
             <p>{module.description}</p>
             <p>
-              Улучшение: {mission.upgrades[module.id].cost} деталей,{" "}
-              {config.upgrade.energyCost} энергии и одна операция.
+              Поліпшення: {mission.upgrades[module.id].cost} деталей,{" "}
+              {config.upgrade.energyCost} енергії та одна операція.
             </p>
             <button
               className="button primary full-width"
@@ -221,7 +221,7 @@ export function Dialogs() {
                 void send({ type: "upgrade", moduleId: module.id })
               }
             >
-              Улучшить модуль
+              Поліпшити модуль
               <Icon name="arrowUp" size={16} />
             </button>
             {mission.upgrades[module.id].reason && (
@@ -239,7 +239,7 @@ export function Dialogs() {
                 connection === "offline" ? void initialize() : clearError()
               }
             >
-              {connection === "offline" ? "Переподключить" : "Понятно"}
+              {connection === "offline" ? "Підключитися знову" : "Зрозуміло"}
             </button>
           </div>
         )}

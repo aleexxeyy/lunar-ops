@@ -6,48 +6,48 @@ import { act, go, state } from "./helpers";
 test.beforeEach(async ({ page }) => {
   await page.goto("/");
   await expect(
-    page.getByRole("button", { name: "Завершить день" }),
+    page.getByRole("button", { name: "Завершити день" }),
   ).toBeEnabled();
 });
 
 test("navigation supports reload, browser history, shortcuts and keyboard focus", async ({
   page,
 }) => {
-  await go(page, "Лунная база");
+  await go(page, "Місячна база");
   await expect(page).toHaveURL(/#\/station$/);
-  await go(page, "Экипаж");
+  await go(page, "Екіпаж");
   await page.reload();
   await expect(
-    page.getByRole("heading", { name: "Люди за миссией" }),
+    page.getByRole("heading", { name: "Команда місії" }),
   ).toBeVisible();
   await page.goBack();
   await expect(
-    page.getByRole("heading", { name: "Системы станции" }),
+    page.getByRole("heading", { name: "Системи станції" }),
   ).toBeVisible();
   await page.goForward();
   await expect(
-    page.getByRole("heading", { name: "Люди за миссией" }),
+    page.getByRole("heading", { name: "Команда місії" }),
   ).toBeVisible();
-  await page.getByRole("button", { name: "Перейти к операциям" }).click();
+  await page.getByRole("button", { name: "Перейти до операцій" }).click();
   await expect(page).toHaveURL(/#\/overview$/);
-  await page.getByRole("button", { name: "Управление", exact: true }).click();
+  await page.getByRole("button", { name: "Керування", exact: true }).click();
   await expect(page).toHaveURL(/#\/crew$/);
-  await go(page, "Командный центр");
-  await page.getByRole("button", { name: "Все записи", exact: true }).click();
+  await go(page, "Командний центр");
+  await page.getByRole("button", { name: "Усі записи", exact: true }).click();
   await expect(page).toHaveURL(/#\/journal$/);
   if (
     await page
-      .getByRole("button", { name: "Lunar Ops — командный центр" })
+      .getByRole("button", { name: "Lunar Ops — командний центр" })
       .isVisible()
   ) {
     await page
-      .getByRole("button", { name: "Lunar Ops — командный центр" })
+      .getByRole("button", { name: "Lunar Ops — командний центр" })
       .click();
     await page.getByRole("button", { name: "Протокол командира" }).click();
     await expect(page.getByRole("dialog")).toBeVisible();
     await page.keyboard.press("Escape");
   }
-  await page.getByRole("link", { name: "К содержимому" }).focus();
+  await page.getByRole("link", { name: "До вмісту" }).focus();
   await page.keyboard.press("Enter");
   await expect(page.locator("main")).toBeFocused();
   expect(
@@ -59,28 +59,28 @@ test("navigation supports reload, browser history, shortcuts and keyboard focus"
 
 for (const item of [
   {
-    resource: "Энергия",
+    resource: "Енергія",
     key: "energy",
-    action: "Улучшить модуль",
-    module: "Солнечный массив",
+    action: "Поліпшити модуль",
+    module: "Сонячні панелі",
   },
   {
-    resource: "Кислород",
+    resource: "Кисень",
     key: "oxygen",
-    action: "Восстановить кислород",
-    module: "Система жизнеобеспечения",
+    action: "Поповнити запас кисню",
+    module: "Система життєзабезпечення",
   },
   {
     resource: "Вода",
     key: "water",
-    action: "Переработать воду",
-    module: "Гидропонный отсек",
+    action: "Очистити воду",
+    module: "Гідропонний відсік",
   },
   {
-    resource: "Мораль",
+    resource: "Настрій",
     key: "morale",
-    action: "Отдых экипажа",
-    module: "Гидропонный отсек",
+    action: "Відпочинок екіпажу",
+    module: "Гідропонний відсік",
   },
 ] as const) {
   test(`${item.resource}: chart, resource dialog and contextual action use real state`, async ({
@@ -92,7 +92,7 @@ for (const item of [
     await legend.click();
     await expect(legend).toHaveAttribute("aria-pressed", "true");
     await expect(
-      page.getByRole("img", { name: new RegExp(`История: ${item.resource}`) }),
+      page.getByRole("img", { name: new RegExp(`Історія: ${item.resource}`) }),
     ).toBeVisible();
     await page
       .getByRole("button", { name: new RegExp(`^${item.resource}:`) })
@@ -127,13 +127,13 @@ for (const item of [
         page.getByRole("dialog").getByRole("heading", { name: item.module }),
       ).toBeVisible();
     }
-    await page.getByRole("button", { name: "Закрыть диалог" }).click();
+    await page.getByRole("button", { name: "Закрити діалог" }).click();
     await expect(
       page.getByRole("button", {
         name: new RegExp(`^${item.resource}: ${after.resources[item.key]}%`),
       }),
     ).toBeVisible();
-    await page.getByRole("button", { name: "Закрыть уведомление" }).click();
+    await page.getByRole("button", { name: "Закрити сповіщення" }).click();
     await expect(page.locator(".toast")).not.toBeVisible();
   });
 }
@@ -142,47 +142,53 @@ test("every station hotspot opens its module and upgrades stop at the level cap"
   page,
 }) => {
   for (const name of [
-    "Солнечный массив",
-    "Система жизнеобеспечения",
-    "Гидропонный отсек",
-    "Научная лаборатория",
+    "Сонячні панелі",
+    "Система життєзабезпечення",
+    "Гідропонний відсік",
+    "Наукова лабораторія",
   ]) {
-    await page.getByRole("button", { name: `${name}: детали модуля` }).click();
+    await page.getByRole("button", { name: `${name}: деталі модуля` }).click();
     await expect(
       page.getByRole("dialog").getByRole("heading", { name, exact: true }),
     ).toBeVisible();
     await page.keyboard.press("Escape");
   }
-  await go(page, "Лунная база");
+  await go(page, "Місячна база");
   const solar = page.locator(".module-row").filter({ hasText: "PWR-01" });
-  await act(page, solar.getByRole("button", { name: "Улучшить", exact: true }));
-  await act(page, solar.getByRole("button", { name: "Улучшить", exact: true }));
-  await expect(solar).toContainText("УРОВЕНЬ 3");
+  await act(
+    page,
+    solar.getByRole("button", { name: "Поліпшити", exact: true }),
+  );
+  await act(
+    page,
+    solar.getByRole("button", { name: "Поліпшити", exact: true }),
+  );
+  await expect(solar).toContainText("РІВЕНЬ 3");
   await expect(solar.getByRole("button")).toBeDisabled();
-  await act(page, "Завершить день");
+  await act(page, "Завершити день");
   await page
-    .getByRole("button", { name: /Требуется решение: Солнечная буря/ })
+    .getByRole("button", { name: /Потрібне рішення: Сонячна буря/ })
     .click();
   const before = await state(page);
-  await act(page, /Активировать защиту/);
+  await act(page, /Активувати захист/);
   expect((await state(page)).resources.energy).toBe(
     before.resources.energy - 14,
   );
-  await go(page, "Лунная база");
-  await expect(solar).toContainText("Достигнут максимальный уровень");
+  await go(page, "Місячна база");
+  await expect(solar).toContainText("Досягнуто максимального рівня");
   await expect(solar.getByRole("button")).toBeDisabled();
 });
 
 test("every crew member can be reassigned to each role without spending operations", async ({
   page,
 }) => {
-  await go(page, "Экипаж");
+  await go(page, "Екіпаж");
   for (let index = 0; index < 3; index += 1) {
     await page
-      .getByRole("button", { name: "Назначить роль" })
+      .getByRole("button", { name: "Призначити роль" })
       .nth(index)
       .click();
-    for (const name of ["Медик", "Исследователь", "Инженер"]) {
+    for (const name of ["Медик", "Дослідник", "Інженер"]) {
       const button = page
         .getByRole("dialog")
         .getByRole("button", { name: new RegExp(name) });
@@ -200,15 +206,15 @@ test("every crew member can be reassigned to each role without spending operatio
 test("journal filters match server entries and export contains the current mission", async ({
   page,
 }) => {
-  await act(page, /Исследовать реголит/);
-  await act(page, "Завершить день");
-  await act(page, /Переждать в укрытии/);
-  await go(page, "Журнал миссии");
+  await act(page, /Дослідити реголіт/);
+  await act(page, "Завершити день");
+  await act(page, /Перечекати в укритті/);
+  await go(page, "Журнал місії");
   const current = await state(page);
   for (const [label, kind] of [
-    ["События", "event"],
-    ["Операции", "action"],
-    ["Все записи", "all"],
+    ["Події", "event"],
+    ["Операції", "action"],
+    ["Усі записи", "all"],
   ] as const) {
     await page.getByRole("button", { name: label, exact: true }).click();
     await expect(
@@ -220,7 +226,7 @@ test("journal filters match server entries and export contains the current missi
     );
   }
   const download = page.waitForEvent("download");
-  await page.getByRole("button", { name: "Экспорт JSON" }).click();
+  await page.getByRole("button", { name: "Експорт JSON" }).click();
   const file = await (await download).path();
   expect(JSON.parse(await readFile(file!, "utf8"))).toEqual(current);
 });
@@ -237,7 +243,7 @@ test("a double click cannot submit two operations", async ({ page }) => {
     await route.continue();
   });
   await page
-    .getByRole("button", { name: /Исследовать реголит/ })
+    .getByRole("button", { name: /Дослідити реголіт/ })
     .evaluate((button) => {
       if (!(button instanceof HTMLButtonElement))
         throw new Error("Expected an operation button");
@@ -245,10 +251,10 @@ test("a double click cannot submit two operations", async ({ page }) => {
       button.click();
     });
   await expect(
-    page.getByRole("button", { name: /Переработать воду/ }),
+    page.getByRole("button", { name: /Очистити воду/ }),
   ).toBeDisabled();
   release();
-  await expect(page.locator(".connection")).toContainText("КАНАЛ АКТИВЕН");
+  await expect(page.locator(".connection")).toContainText("КАНАЛ АКТИВНИЙ");
   expect(requests).toBe(1);
   expect((await state(page)).revision).toBe(1);
 });
@@ -258,26 +264,26 @@ test("offline commands are blocked and can be recovered from inside a dialog", a
 }) => {
   const before = await state(page);
   await page.route("**/api/**", (route) => route.abort());
-  await page.getByRole("button", { name: /Исследовать реголит/ }).click();
-  await expect(page.locator(".connection")).toContainText("ПРОВЕРЬТЕ СВЯЗЬ");
+  await page.getByRole("button", { name: /Дослідити реголіт/ }).click();
+  await expect(page.locator(".connection")).toContainText("ПЕРЕВІРТЕ ЗВ’ЯЗОК");
   await expect(
-    page.getByRole("button", { name: "Завершить день" }),
+    page.getByRole("button", { name: "Завершити день" }),
   ).toBeDisabled();
-  await page.getByRole("button", { name: /Солнечный массив: детали/ }).click();
+  await page.getByRole("button", { name: /Сонячні панелі: деталі/ }).click();
   await expect(
-    page.getByRole("dialog").getByRole("button", { name: "Улучшить модуль" }),
+    page.getByRole("dialog").getByRole("button", { name: "Поліпшити модуль" }),
   ).toBeDisabled();
   await page.unroute("**/api/**");
   await page
     .getByRole("dialog")
-    .getByRole("button", { name: "Переподключить" })
+    .getByRole("button", { name: "Підключитися знову" })
     .click();
   await expect(
-    page.getByRole("dialog").getByRole("button", { name: "Улучшить модуль" }),
+    page.getByRole("dialog").getByRole("button", { name: "Поліпшити модуль" }),
   ).toBeEnabled();
   expect((await state(page)).id).toBe(before.id);
   expect((await state(page)).revision).toBe(0);
-  await act(page, "Улучшить модуль");
+  await act(page, "Поліпшити модуль");
 });
 
 test("a lost successful response reconciles state without repeating the operation", async ({
@@ -289,9 +295,9 @@ test("a lost successful response reconciles state without repeating the operatio
     await route.fetch();
     await route.abort();
   });
-  await page.getByRole("button", { name: /Исследовать реголит/ }).click();
-  await expect(page.locator(".toast")).toContainText("Связь восстановлена");
-  await expect(page.locator(".connection")).toContainText("КАНАЛ АКТИВЕН");
+  await page.getByRole("button", { name: /Дослідити реголіт/ }).click();
+  await expect(page.locator(".toast")).toContainText("Зв’язок відновлено");
+  await expect(page.locator(".connection")).toContainText("КАНАЛ АКТИВНИЙ");
   await expect(page.getByRole("alert")).toHaveCount(0);
   expect(requests).toBe(1);
   expect((await state(page)).science).toBe(18);
@@ -305,17 +311,17 @@ test("stale commands from another tab refresh state without a false offline indi
   const other = await context.newPage();
   await other.goto("/");
   await expect(
-    other.getByRole("button", { name: "Завершить день" }),
+    other.getByRole("button", { name: "Завершити день" }),
   ).toBeEnabled();
-  await act(page, /Исследовать реголит/);
-  await other.getByRole("button", { name: /Отдых экипажа/ }).click();
-  await expect(other.getByRole("alert")).toContainText("другой вкладке");
-  await expect(other.locator(".connection")).toContainText("КАНАЛ АКТИВЕН");
+  await act(page, /Дослідити реголіт/);
+  await other.getByRole("button", { name: /Відпочинок екіпажу/ }).click();
+  await expect(other.getByRole("alert")).toContainText("іншій вкладці");
+  await expect(other.locator(".connection")).toContainText("КАНАЛ АКТИВНИЙ");
   await expect(
-    other.getByRole("button", { name: /Исследовать реголит/ }),
+    other.getByRole("button", { name: /Дослідити реголіт/ }),
   ).toBeDisabled();
-  await other.getByRole("button", { name: "Понятно", exact: true }).click();
-  await act(other, /Отдых экипажа/);
+  await other.getByRole("button", { name: "Зрозуміло", exact: true }).click();
+  await act(other, /Відпочинок екіпажу/);
   expect((await state(other)).revision).toBe(2);
   await other.close();
 });
@@ -337,24 +343,24 @@ test("reconnecting with storage disabled preserves the in-memory session", async
   await page.reload();
   const initial = (await (await created).json()) as MissionView;
   await expect(
-    page.getByRole("button", { name: "Завершить день" }),
+    page.getByRole("button", { name: "Завершити день" }),
   ).toBeEnabled();
-  await act(page, /Исследовать реголит/);
+  await act(page, /Дослідити реголіт/);
   await page.route("**/api/**", (route) => route.abort());
-  await page.getByRole("button", { name: /Отдых экипажа/ }).click();
-  await expect(page.locator(".connection")).toContainText("ПРОВЕРЬТЕ СВЯЗЬ");
+  await page.getByRole("button", { name: /Відпочинок екіпажу/ }).click();
+  await expect(page.locator(".connection")).toContainText("ПЕРЕВІРТЕ ЗВ’ЯЗОК");
   await page.unroute("**/api/**");
   let newSessions = 0;
   page.on("request", (r) => {
     if (r.url().endsWith("/sessions") && r.method() === "POST")
       newSessions += 1;
   });
-  await page.getByRole("button", { name: "Переподключить" }).click();
-  await expect(page.locator(".connection")).toContainText("КАНАЛ АКТИВЕН");
+  await page.getByRole("button", { name: "Підключитися знову" }).click();
+  await expect(page.locator(".connection")).toContainText("КАНАЛ АКТИВНИЙ");
   await expect(
-    page.getByRole("button", { name: /Исследовать реголит/ }),
+    page.getByRole("button", { name: /Дослідити реголіт/ }),
   ).toBeDisabled();
-  await act(page, /Отдых экипажа/);
+  await act(page, /Відпочинок екіпажу/);
   expect(newSessions).toBe(0);
   const current = (await (
     await page.request.get(`/api/sessions/${initial.id}`)
@@ -365,12 +371,12 @@ test("reconnecting with storage disabled preserves the in-memory session", async
 test("a failed mission locks commands and the next-flight button creates a fresh mission", async ({
   page,
 }) => {
-  await page.getByRole("button", { name: "Новая миссия" }).click();
+  await page.getByRole("button", { name: "Нова місія" }).click();
   await page
     .getByRole("dialog")
     .getByRole("button", { name: /Командир/ })
     .click();
-  await page.getByRole("button", { name: "Запустить экспедицию" }).click();
+  await page.getByRole("button", { name: "Розпочати експедицію" }).click();
   await expect(page.getByRole("dialog")).not.toBeVisible();
   const id = (await state(page)).id;
   for (let index = 0; index < 7; index += 1) {
@@ -378,17 +384,17 @@ test("a failed mission locks commands and the next-flight button creates a fresh
     if (current.status !== "active") break;
     if (current.pendingEvent)
       await act(page, new RegExp(current.pendingEvent.choices.at(-1)!.label));
-    await act(page, "Завершить день");
+    await act(page, "Завершити день");
   }
   await expect(
-    page.getByRole("heading", { name: "Экспедиция завершена." }),
+    page.getByRole("heading", { name: "Експедицію завершено." }),
   ).toBeVisible();
   await expect(
-    page.getByRole("button", { name: /Исследовать реголит/ }),
+    page.getByRole("button", { name: /Дослідити реголіт/ }),
   ).toBeDisabled();
-  await page.getByRole("button", { name: "Следующий полёт" }).click();
+  await page.getByRole("button", { name: "Наступний політ" }).click();
   await page.getByRole("dialog").getByRole("button", { name: /Кадет/ }).click();
-  await page.getByRole("button", { name: "Запустить экспедицию" }).click();
+  await page.getByRole("button", { name: "Розпочати експедицію" }).click();
   await expect(page.getByRole("dialog")).not.toBeVisible();
   expect((await state(page)).id).not.toBe(id);
   expect((await state(page)).day).toBe(1);

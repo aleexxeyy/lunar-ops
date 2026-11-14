@@ -19,7 +19,7 @@ describe("mission simulation", () => {
     expect(getMissionView(state).availableActions.water.available).toBe(false);
     expect(() =>
       executeCommand(state, { type: "action", actionId: "water" }),
-    ).toThrow("Восстановление не требуется");
+    ).toThrow("Відновлення не потрібне");
     expect(JSON.stringify(state)).toBe(snapshot);
   });
   it("allows rest with full morale when a crew member still needs healing", () => {
@@ -77,7 +77,7 @@ describe("mission simulation", () => {
     expect(next.actionsRemaining).toBe(state.actionsRemaining);
     expect(() =>
       executeCommand(next, { type: "resolve", choiceId: choice.id }),
-    ).toThrow("Нет активного события");
+    ).toThrow("Немає активної події");
   });
   it("is deterministic and does not mutate the previous state", () => {
     const initial = fresh();
@@ -101,18 +101,18 @@ describe("mission simulation", () => {
     const one = executeCommand(fresh(), { type: "action", actionId: "water" });
     expect(() =>
       executeCommand(one, { type: "action", actionId: "water" }),
-    ).toThrow("уже выполнена");
+    ).toThrow("вже виконано");
     const two = executeCommand(one, { type: "action", actionId: "rest" });
     expect(() =>
       executeCommand(two, { type: "upgrade", moduleId: "solar" }),
-    ).toThrow("Все операции");
+    ).toThrow("Усі операції");
   });
   it("prevents overspending resources and parts", () => {
     const state = fresh();
     state.resources.energy = 12;
     expect(() =>
       executeCommand(state, { type: "action", actionId: "research" }),
-    ).toThrow("Недостаточно");
+    ).toThrow("Недостатньо");
     state.parts = 0;
     expect(() =>
       executeCommand(state, { type: "upgrade", moduleId: "solar" }),
@@ -156,22 +156,22 @@ describe("mission simulation", () => {
   it("requires an event decision before any ordinary command", () => {
     const state = advance(fresh());
     expect(state.pendingEvent?.id).toBe("solar-storm");
-    expect(() => advance(state)).toThrow("Сначала");
+    expect(() => advance(state)).toThrow("Спочатку");
     expect(() =>
       executeCommand(state, { type: "action", actionId: "rest" }),
-    ).toThrow("Сначала");
+    ).toThrow("Спочатку");
     expect(() =>
       executeCommand(state, { type: "assign", crewId: "nova", role: "medic" }),
-    ).toThrow("Сначала");
+    ).toThrow("Спочатку");
     const resolved = executeCommand(state, {
       type: "resolve",
       choiceId: "shelter",
     });
     expect(resolved.pendingEvent).toBeNull();
-    expect(resolved.log.at(-1)?.message).toContain("магнитного поля");
+    expect(resolved.log.at(-1)?.message).toContain("магнітного поля");
     expect(() =>
       executeCommand(resolved, { type: "resolve", choiceId: "shelter" }),
-    ).toThrow("Нет активного");
+    ).toThrow("Немає активної");
   });
   it("rejects unknown crew and event choices", () => {
     expect(() =>
@@ -180,13 +180,13 @@ describe("mission simulation", () => {
         crewId: "unknown",
         role: "medic",
       }),
-    ).toThrow("не найден");
+    ).toThrow("не знайдено");
     expect(() =>
       executeCommand(advance(fresh()), {
         type: "resolve",
         choiceId: "unknown",
       }),
-    ).toThrow("Неизвестное");
+    ).toThrow("Невідоме");
   });
   it("applies crew role bonuses only at the end of a day", () => {
     const initial = fresh();
@@ -219,7 +219,7 @@ describe("mission simulation", () => {
     const lost = advance(state);
     expect(lost.status).toBe("lost");
     expect(lost.pendingEvent).toBeNull();
-    expect(() => advance(lost)).toThrow("Миссия завершена");
+    expect(() => advance(lost)).toThrow("Місію завершено");
   });
   it("damages crew health when resources are critical", () => {
     const state = fresh();

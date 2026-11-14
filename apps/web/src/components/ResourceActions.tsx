@@ -27,7 +27,7 @@ export function ResourceActions({ resource }: { resource: ResourceKey }) {
           </button>
           <p className="muted">
             {mission.availableActions[action.id].reason ??
-              "Расходует одну операцию текущего дня."}
+              "Витрачає одну операцію поточного дня."}
           </p>
         </>
       )}

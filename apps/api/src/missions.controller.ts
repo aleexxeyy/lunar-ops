@@ -26,7 +26,7 @@ export class MissionsController {
   create(@Body() body: unknown) {
     const result = createSessionSchema.safeParse(body);
     if (!result.success)
-      throw new BadRequestException('Выберите корректный уровень сложности.');
+      throw new BadRequestException('Виберіть коректний рівень складності.');
     return this.missions.create(result.data.difficulty);
   }
 
@@ -39,7 +39,7 @@ export class MissionsController {
   execute(@Param('id') id: string, @Body() body: unknown) {
     const result = commandSchema.safeParse(body);
     if (!result.success)
-      throw new BadRequestException('Некорректная команда миссии.');
+      throw new BadRequestException('Некоректна команда місії.');
     return this.missions.execute(id, result.data);
   }
 }

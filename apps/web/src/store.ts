@@ -20,7 +20,7 @@ export type Dialog =
   | null;
 const sessionKey = "lunar-ops-session-v1";
 const message = (error: unknown) =>
-  error instanceof Error ? error.message : "Не удалось выполнить запрос.";
+  error instanceof Error ? error.message : "Не вдалося виконати запит.";
 function savedSession(): string | null {
   try {
     return localStorage.getItem(sessionKey);
@@ -92,7 +92,7 @@ export const useMission = create<MissionStore>((set, get) => ({
           });
           set({
             notice:
-              "Предыдущая сессия завершилась на сервере. Создана новая миссия.",
+              "Попередня сесія завершилася на сервері. Створено нову місію.",
           });
         }
       } else
@@ -119,7 +119,7 @@ export const useMission = create<MissionStore>((set, get) => ({
         connection: "online",
         page: "overview",
         dialog: null,
-        notice: "Новая экспедиция готова. Добро пожаловать на Луну.",
+        notice: "Нова експедиція готова. Вітаємо на Місяці.",
       });
     } catch (error) {
       set({ error: message(error), connection: "offline" });
@@ -139,7 +139,7 @@ export const useMission = create<MissionStore>((set, get) => ({
       set({
         mission: next,
         connection: "online",
-        notice: next.log.at(-1)?.message ?? "Команда выполнена.",
+        notice: next.log.at(-1)?.message ?? "Команду виконано.",
       });
     } catch (error) {
       set({ error: message(error), connection: "offline" });
@@ -155,7 +155,7 @@ export const useMission = create<MissionStore>((set, get) => ({
             ? {
                 error: null,
                 notice:
-                  "Связь восстановлена. Состояние миссии обновлено — результат доступен в журнале.",
+                  "Зв’язок відновлено. Стан місії оновлено — результат доступний у журналі.",
               }
             : {}),
         });

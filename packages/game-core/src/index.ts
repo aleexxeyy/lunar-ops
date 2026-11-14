@@ -47,7 +47,7 @@ export function createMission(
         day: 1,
         kind: "system",
         message:
-          "Посадка выполнена. База «Горизонт» в сети. Командование передано вам.",
+          "Посадку виконано. База «Горизонт» на зв’язку. Командування передано вам.",
       },
     ],
   };
@@ -55,19 +55,19 @@ export function createMission(
 
 function operational(state: MissionState): Availability {
   if (state.status !== "active")
-    return denied("Миссия завершена. Начните новую экспедицию.");
+    return denied("Місію завершено. Розпочніть нову експедицію.");
   if (state.pendingEvent)
-    return denied("Сначала примите решение по текущему событию.");
+    return denied("Спочатку ухваліть рішення щодо поточної події.");
   return allowed;
 }
 
 function affordable(state: MissionState, effect: Effect): Availability {
   if (effect.parts && state.parts + effect.parts < 0)
-    return denied("Недостаточно запасных деталей.");
+    return denied("Недостатньо запасних деталей.");
   for (const key of resourceKeys) {
     const change = effect.resources?.[key] ?? 0;
     if (change < 0 && state.resources[key] + change <= 0)
-      return denied("Недостаточно ресурсов для безопасного выполнения.");
+      return denied("Недостатньо ресурсів для безпечного виконання.");
   }
   return allowed;
 }
@@ -77,7 +77,7 @@ function actionSlot(state: MissionState): Availability {
   if (!ready.available) return ready;
   return state.actionsRemaining > 0
     ? allowed
-    : denied("Все операции на сегодня выполнены. Завершите день.");
+    : denied("Усі операції на сьогодні виконано. Завершіть день.");
 }
 
 function hasBenefit(state: MissionState, effect: Effect): boolean {
@@ -123,10 +123,10 @@ export function getMissionView(state: MissionState): MissionView {
       !slot.available
         ? slot
         : state.usedActions.includes(action.id)
-          ? denied("Эта операция уже выполнена сегодня.")
+          ? denied("Цю операцію вже виконано сьогодні.")
           : !hasBenefit(state, action.effect)
             ? denied(
-                "Восстановление не требуется: запас и здоровье уже полные.",
+                "Відновлення не потрібне: запаси та здоров’я вже на максимумі.",
               )
             : affordable(state, action.effect),
     ]),
@@ -137,7 +137,7 @@ export function getMissionView(state: MissionState): MissionView {
       const availability = !slot.available
         ? slot
         : state.modules[id] >= config.upgrade.maxLevel
-          ? denied("Достигнут максимальный уровень.")
+          ? denied("Досягнуто максимального рівня.")
           : affordable(state, {
               parts: -cost,
               resources: { energy: -config.upgrade.energyCost },
@@ -213,13 +213,13 @@ function finishIfNeeded(state: MissionState): void {
   ) {
     state.status = "lost";
     state.outcome =
-      "Критический запас или здоровье экипажа исчерпаны. Экспедиция досрочно эвакуирована.";
+      "Критичний запас ресурсів або здоров’я екіпажу вичерпано. Експедицію достроково евакуйовано.";
   } else if (state.completedDays >= config.duration) {
     state.status = state.science >= config.scienceTarget ? "won" : "lost";
     state.outcome =
       state.status === "won"
-        ? "Экипаж в безопасности, научная программа выполнена. Отличная работа, командир!"
-        : "Экипаж вернулся на Землю, но научная цель не достигнута. В следующем полёте выделите больше времени исследованиям.";
+        ? "Екіпаж у безпеці, наукову програму виконано. Чудова робота, командире!"
+        : "Екіпаж повернувся на Землю, але наукової мети не досягнуто. Під час наступного польоту приділіть більше часу дослідженням.";
   }
   if (state.status !== "active") {
     state.pendingEvent = null;
@@ -248,7 +248,7 @@ export function executeCommand(
       applyEffect(state, view.actionEffects[action.id]);
       state.usedActions.push(action.id);
       state.actionsRemaining -= 1;
-      log(state, "action", `Операция выполнена: ${action.name}.`);
+      log(state, "action", `Операцію виконано: ${action.name}.`);
       break;
     }
     case "upgrade": {
@@ -262,30 +262,30 @@ export function executeCommand(
       log(
         state,
         "action",
-        `${config.modules.find(({ id }) => id === command.moduleId)!.name}: уровень ${state.modules[command.moduleId]}.`,
+        `${config.modules.find(({ id }) => id === command.moduleId)!.name}: рівень ${state.modules[command.moduleId]}.`,
       );
       break;
     }
     case "assign": {
       requireAvailable(view.canAssign);
       const member = state.crew.find(({ id }) => id === command.crewId);
-      if (!member) throw new MissionError("Участник экипажа не найден.");
+      if (!member) throw new MissionError("Учасника екіпажу не знайдено.");
       if (member.role === command.role)
-        throw new MissionError("Эта роль уже назначена.");
+        throw new MissionError("Цю роль уже призначено.");
       member.role = command.role;
       log(
         state,
         "action",
-        `${member.callsign}: назначение «${config.roles[command.role].name}».`,
+        `${member.callsign}: призначення «${config.roles[command.role].name}».`,
       );
       break;
     }
     case "resolve": {
       if (state.status !== "active" || !state.pendingEvent)
-        throw new MissionError("Нет активного события.");
+        throw new MissionError("Немає активної події.");
       const event = state.pendingEvent;
       const choice = event.choices.find(({ id }) => id === command.choiceId);
-      if (!choice) throw new MissionError("Неизвестное решение.");
+      if (!choice) throw new MissionError("Невідоме рішення.");
       requireAvailable(affordable(state, choice.effect));
       applyEffect(state, choice.effect);
       state.pendingEvent = null;
@@ -319,7 +319,7 @@ export function executeCommand(
       log(
         state,
         "system",
-        `День ${state.day} завершён. Телеметрия сохранена, научные данные: ${state.science}.`,
+        `День ${state.day} завершено. Телеметрію збережено, наукові дані: ${state.science}.`,
       );
       finishIfNeeded(state);
       if (state.status === "active") {
@@ -329,11 +329,7 @@ export function executeCommand(
         state.pendingEvent =
           config.events.find((event) => event.day === state.day) ?? null;
         if (state.pendingEvent)
-          log(
-            state,
-            "event",
-            `Требуется решение: ${state.pendingEvent.title}.`,
-          );
+          log(state, "event", `Потрібне рішення: ${state.pendingEvent.title}.`);
       }
       break;
     }

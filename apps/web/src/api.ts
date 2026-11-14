@@ -20,7 +20,9 @@ export async function request<T>(path: string, body?: unknown): Promise<T> {
       signal: AbortSignal.timeout(10000),
     });
   } catch {
-    throw new Error("Нет связи с центром управления. Повторите подключение.");
+    throw new Error(
+      "Немає зв’язку з центром керування. Спробуйте підключитися знову.",
+    );
   }
   if (!response.ok) {
     const error = (await response.json().catch(() => null)) as {
@@ -29,7 +31,7 @@ export async function request<T>(path: string, body?: unknown): Promise<T> {
     throw new ApiError(
       typeof error?.message === "string"
         ? error.message
-        : "Сервер недоступен. Повторите подключение.",
+        : "Сервер недоступний. Спробуйте підключитися знову.",
       response.status,
     );
   }
@@ -37,7 +39,7 @@ export async function request<T>(path: string, body?: unknown): Promise<T> {
     return (await response.json()) as T;
   } catch {
     throw new Error(
-      "Не удалось прочитать ответ центра управления. Повторите подключение.",
+      "Не вдалося прочитати відповідь центру керування. Спробуйте підключитися знову.",
     );
   }
 }
