@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lunar Ops — Space Apps Dnipro 2026</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400..700&family=Nunito+Sans:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+:root {
+  --ink: #0B1026;
+  --ink2: #151C40;
+  --line: #27315F;
+  --paper: #CBD0E9;
+  --card: #FBFCFF;
+  --moon: #E8ECF7;
+  --mute: #B4BEDD;
+  --mute-l: #46507A;
+  --mars: #FF7A3D;
+  --mars-d: #C2461A;
+  --teal: #38D9C4;
+  --amber: #FFC24B;
+  --lav: #8C9BFF;
+}
+
+body { font-family: 'Nunito Sans', Arial, sans-serif; }
+
+section {
+  background: var(--ink);
+  color: var(--moon);
+  padding: 128px 128px 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+section.light { background: var(--paper); color: var(--ink); }
+
+h1, h2, h3 { font-family: 'Space Grotesk', Arial, sans-serif; }
+h1 { font-size: 120px; font-weight: 700; line-height: 1; }
+h2 { font-size: 72px; font-weight: 700; line-height: 1.05; }
+h3 { font-size: 36px; font-weight: 700; line-height: 1.15; }
+
+.stars { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+
+.head { display: flex; flex-direction: column; gap: 16px; }
+.eyebrow {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 24px; font-weight: 700; letter-spacing: 4px;
+  color: var(--mars);
+}
+.light .eyebrow { color: var(--mars-d); }
+
+.lead { font-size: 32px; line-height: 1.4; color: var(--mute); }
+.light .lead { color: var(--mute-l); }
+.body { font-size: 28px; line-height: 1.4; color: var(--mute); }
+.light .body { color: var(--mute-l); }
+
+.foot {
+  position: absolute; left: 128px; bottom: 64px; width: 1664px;
+  display: flex; justify-content: space-between;
+}
+.foot p {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 24px; color: #8792B8;
+}
+.light .foot p { color: #5A6488; }
+
+/* cover */
+.cover { justify-content: space-between; }
+.cover-body { display: flex; flex-direction: column; gap: 32px; width: 1100px; }
+.cover .sub { font-size: 44px; line-height: 1.2; color: var(--moon); }
+.pill {
+  align-self: flex-start;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 26px; font-weight: 700;
+  background: var(--mars); color: var(--ink);
+  padding: 14px 28px; border-radius: 999px;
+}
+.cover-meta { display: flex; flex-direction: column; gap: 12px; width: 1000px; }
+.cover-meta p { font-size: 24px; line-height: 1.4; color: var(--mute); }
+.cover-meta .contact { font-family: 'JetBrains Mono', 'Courier New', monospace; color: var(--teal); }
+
+/* cards */
+.row { display: flex; gap: 32px; }
+.card {
+  flex: 1;
+  background: var(--card);
+  border-radius: 28px;
+  padding: 40px;
+  display: flex; flex-direction: column; gap: 16px;
+  box-shadow: 0 12px 32px rgba(11, 16, 38, 0.08);
+}
+.card.dark { background: var(--ink); color: var(--moon); }
+.card.dark .body { color: var(--mute); }
+.tag {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 24px; font-weight: 700; letter-spacing: 2px;
+  color: var(--mars-d);
+}
+.card.dark .tag { color: var(--mars); }
+
+.stats { display: flex; gap: 32px; }
+.stat {
+  flex: 1; border-radius: 28px; padding: 32px 40px;
+  background: #DDE3F2;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.stat .num { font-family: 'Space Grotesk', Arial, sans-serif; font-size: 96px; font-weight: 700; line-height: 1; color: var(--ink); }
+.stat .lbl { font-size: 26px; color: var(--mute-l); }
+
+/* how it works */
+.split { display: flex; gap: 64px; flex: 1; }
+.steps { flex: 1; display: flex; flex-direction: column; gap: 28px; }
+.step { display: flex; gap: 28px; align-items: flex-start; }
+.dot {
+  width: 64px; height: 64px; border-radius: 32px;
+  background: var(--mars); color: var(--ink);
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 28px; font-weight: 700; text-align: center; line-height: 64px;
+  flex-shrink: 0;
+}
+.step-text { display: flex; flex-direction: column; gap: 4px; }
+.step-text h3 { font-size: 32px; }
+.step-text p { font-size: 26px; line-height: 1.35; color: var(--mute); }
+.tagline { font-size: 32px; font-style: italic; color: var(--teal); }
+
+.hud {
+  width: 680px;
+  background: var(--ink2);
+  border: 2px solid var(--line);
+  border-radius: 28px;
+  padding: 40px;
+  display: flex; flex-direction: column; gap: 28px;
+}
+.hud-title { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 24px; font-weight: 700; letter-spacing: 3px; color: var(--mute); }
+.gauge { display: flex; flex-direction: column; gap: 10px; }
+.g-row { display: flex; justify-content: space-between; }
+.g-row p { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 26px; color: var(--moon); }
+.track { height: 24px; border-radius: 12px; background: #0B1026; overflow: hidden; }
+.fill { height: 24px; border-radius: 12px; }
+.alert { display: flex; gap: 16px; align-items: center; background: #3A1A12; border-radius: 18px; padding: 20px 24px; }
+.alert x-icon { width: 36px; height: 36px; color: var(--mars); flex-shrink: 0; }
+.alert p { font-size: 24px; line-height: 1.35; color: #FFD9C7; }
+
+/* experience */
+.shot {
+  width: 900px; height: 560px;
+  border-radius: 28px;
+  background: var(--ink);
+  border: 3px dashed #5A6488;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
+}
+.shot x-icon { width: 96px; height: 96px; color: var(--mars); }
+.shot p { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 28px; color: var(--mute); text-align: center; }
+.features { flex: 1; display: flex; flex-direction: column; gap: 36px; justify-content: center; }
+.feat { display: flex; gap: 28px; align-items: flex-start; }
+.ic {
+  width: 80px; height: 80px; border-radius: 40px;
+  background: var(--ink);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.ic x-icon { width: 40px; height: 40px; color: var(--mars); }
+.feat-text { display: flex; flex-direction: column; gap: 6px; }
+.feat-text h3 { font-size: 32px; }
+.feat-text p { font-size: 26px; line-height: 1.35; color: var(--mute-l); }
+
+/* data table */
+.data-table { font-size: 26px; color: var(--moon); width: 1664px; }
+.note { font-size: 24px; color: var(--mute); }
+
+/* crew */
+.crew-row { display: flex; gap: 24px; flex: 1; align-items: center; }
+.member {
+  flex: 1;
+  background: var(--card);
+  border-radius: 28px;
+  padding: 36px 20px;
+  display: flex; flex-direction: column; align-items: center; gap: 20px;
+  box-shadow: 0 12px 32px rgba(11, 16, 38, 0.08);
+}
+.avatar {
+  width: 180px; height: 180px; border-radius: 90px;
+  background: var(--ink);
+  border: 6px solid var(--mars);
+  display: flex; align-items: center; justify-content: center;
+}
+.avatar x-icon { width: 72px; height: 72px; color: var(--mute); }
+.member .name { font-family: 'Space Grotesk', Arial, sans-serif; font-size: 28px; font-weight: 700; text-align: center; line-height: 1.2; }
+.member .role { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 24px; color: var(--mars-d); text-align: center; }
+
+/* next */
+.plans { display: flex; gap: 32px; }
+.plan {
+  flex: 1;
+  background: var(--ink2);
+  border: 2px solid var(--line);
+  border-radius: 28px;
+  padding: 36px 40px;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.plan .tag { color: var(--teal); }
+.plan .body { font-size: 26px; }
+.thanks { display: flex; flex-direction: column; gap: 16px; }
+.thanks h2 { color: var(--mars); }
+.sources { font-size: 24px; line-height: 1.4; color: var(--mute); width: 1500px; }
+
+/* motion */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(24px); }
+}
+.rise { animation: rise 600ms ease-out both; animation-delay: calc(var(--i, 0) * 120ms); }
+@keyframes grow {
+  from { opacity: 0; }
+}
+.fill { animation: grow 900ms ease-out both; animation-delay: 500ms; }
+
+</style>
+<style>
+  html, body { margin: 0; background: #05081A; }
+  .deck { display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 24px 0; }
+  .deck > section { width: 1920px; height: 1080px; box-sizing: border-box; position: relative; overflow: hidden; flex-shrink: 0; }
+  .deck > section aside { display: none; }
+  .deck p, .deck h1, .deck h2, .deck h3 { margin: 0; }
+  .deck table { border-collapse: collapse; }
+  .deck th, .deck td { text-align: left; padding: 0.35em 0.6em; border-bottom: 1px solid #27315F; }
+  .deck x-icon { display: inline-block; }
+</style>
+</head>
+<body>
+<div class="deck">
+<section id="cover" class="cover" data-transition="fade" style="background:linear-gradient(rgba(11,16,38,0.5),rgba(11,16,38,0.5)),url(assets/bg-nebula.jpg) center/cover">
+<svg class="stars" aria-label="Space background with planet Mars and an orbiting moon" width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="mars" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#FFB27A"/><stop offset="0.45" stop-color="#E8622C"/><stop offset="1" stop-color="#4A140A"/></radialGradient></defs>
+<ellipse cx="1560" cy="840" rx="640" ry="140" fill="none" stroke="#FF7A3D" stroke-opacity="0.35" stroke-width="2" transform="rotate(-14 1560 840)"/>
+<circle cx="1560" cy="840" r="380" fill="url(#mars)"/>
+<circle cx="1440" cy="700" r="46" fill="#4A140A" opacity="0.35"/><circle cx="1660" cy="930" r="70" fill="#4A140A" opacity="0.3"/><circle cx="1720" cy="720" r="28" fill="#4A140A" opacity="0.35"/>
+<circle cx="980" cy="1000" r="34" fill="#C9CEDF"/>
+</svg>
+<img src="assets/logo-astra.png" alt="Astra Systems logo" style="position:absolute;top:90px;left:1054px;width:528px">
+<img src="assets/logo-nasa.png" alt="NASA logo" style="position:absolute;top:94px;right:128px;width:170px">
+<div class="cover-body">
+<p class="eyebrow rise" style="--i:0">NASA SPACE APPS CHALLENGE · DNIPRO 2026</p>
+<h1 class="rise" style="--i:1">Astra Systems</h1>
+<p class="sub rise" style="--i:2">Lunar Ops — a browser-based lunar survival and science simulator</p>
+<p class="pill rise" style="--i:3">CHALLENGE: BUILD A JUNIOR ASTRONAUT MISSION TRAINER</p>
+</div>
+<div class="cover-meta rise" style="--i:4">
+<p>Separated Structural Subdivision «Applied Rocket-and-Space Engineering College of Oles Honchar Dnipro National University»</p>
+<p class="contact">https://github.com/aleexxeyy/lunar-ops</p>
+</div>
+<div class="foot"><p>ASTRA SYSTEMS · NASA SPACE APPS · DNIPRO 2026</p><p></p></div>
+<aside>Титульный слайд: команда Astra Systems, проект Lunar Ops, челлендж, колледж и ссылка на репозиторий. Фон — космос из правок команды, Марс и луна нарисованы SVG; логотипы Astra Systems и NASA.</aside>
+</section>
+<section id="mission" class="light" data-transition="fade">
+<div class="head rise" style="--i:0">
+<p class="eyebrow">01 // MISSION BRIEFING</p>
+<h2>Learn to lead a lunar mission</h2>
+</div>
+<div class="row">
+<div class="card rise" style="--i:1">
+<p class="tag">THE PROBLEM</p>
+<p class="body">Space education often shows facts, not the decisions behind them. Lunar Ops turns limited supplies, crew safety and scientific goals into a mission students can manage.</p>
+</div>
+<div class="card dark rise" style="--i:2;background:url(assets/card-stars.jpg) center/cover">
+<p class="tag">OUR MISSION</p>
+<p class="body">Lunar Ops is a browser-based Moon mission simulator. Keep your crew safe for 7 days and collect 60 science points while balancing resources and tough decisions.</p>
+</div>
+</div>
+<div class="stats">
+<div class="stat rise" style="--i:3"><p class="num">7</p><p class="lbl">days to complete the mission</p></div>
+<div class="stat rise" style="--i:4"><p class="num">4</p><p class="lbl">resources: energy, oxygen, water, morale</p></div>
+<div class="stat rise" style="--i:5"><p class="num">2</p><p class="lbl">operations available each day</p></div>
+</div>
+<div class="foot"><p>ASTRA SYSTEMS · NASA SPACE APPS · DNIPRO 2026</p><p>02 / 07</p></div>
+<aside>Проблема и цель. Цифры — из game-config: 7 игровых дней, 4 ресурса, 2 операции в день; цель — 60 научных данных. Аудитория — дети 7–12 лет (условие челленджа).</aside>
+</section>
+<section id="how" data-transition="fade" style="background:linear-gradient(rgba(11,16,38,0.62),rgba(11,16,38,0.62)),url(assets/bg-nebula.jpg) center/cover">
+<svg class="stars" aria-label="Starfield" width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+</svg>
+<div class="head rise" style="--i:0">
+<p class="eyebrow">02 // HOW IT WORKS</p>
+<h2>Every lunar day is a trade-off</h2>
+</div>
+<div class="split">
+<div class="steps">
+<div class="step rise" style="--i:1"><p class="dot">1</p><div class="step-text"><h3>Briefing</h3><p>Review telemetry, crew health, resources and the forecast.</p></div></div>
+<div class="step rise" style="--i:2"><p class="dot">2</p><div class="step-text"><h3>Plan</h3><p>Up to two operations: research, oxygen, water, rest or an upgrade.</p></div></div>
+<div class="step rise" style="--i:3"><p class="dot">3</p><div class="step-text"><h3>Event</h3><p>A solar storm, an air leak or a possible ice discovery.</p></div></div>
+<div class="step rise" style="--i:4"><p class="dot">4</p><div class="step-text"><h3>Debrief</h3><p>See resource changes, science progress and the mission log.</p></div></div>
+<p class="tagline rise" style="--i:5">Gain science today → manage fewer resources tomorrow</p>
+</div>
+<figure class="hud rise" style="--i:2;padding:0;overflow:hidden;margin:0">
+<img src="screenshots/shot-event.png" alt="Solar storm event in the Lunar Ops prototype" style="display:block;width:100%;height:auto">
+<figcaption style="font-size:22px;color:#B4BEDD;text-align:center;padding:14px 0">Day 2 event in the working prototype · UA interface</figcaption>
+</figure>
+</div>
+<div class="foot"><p>ASTRA SYSTEMS · NASA SPACE APPS · DNIPRO 2026</p><p>03 / 07</p></div>
+<aside>Игровой цикл одного дня. Справа — реальный скриншот события «Солнечная буря» (день 2). Расход в день: энергия −18, кислород −14, вода −12, мораль −6 (Командир: +35%).</aside>
+</section>
+<section id="experience" class="light" data-transition="fade">
+<div class="head rise" style="--i:0">
+<p class="eyebrow">03 // PLAYER EXPERIENCE</p>
+<h2>Easy to start, hard to master</h2>
+</div>
+<div class="split">
+<div class="shot rise" style="--i:1;position:relative;padding:0;background:#0B1026;border:none">
+<img src="screenshots/shot-dashboard.png" alt="Lunar Ops mission dashboard" style="display:block;width:100%;height:auto;border-radius:12px">
+<img src="screenshots/shot-mobile.png" alt="Lunar Ops on a phone" style="position:absolute;right:-40px;bottom:-90px;width:190px;border:8px solid #0B1026;border-radius:24px">
+</div>
+<div class="features">
+<div class="feat rise" style="--i:2"><div class="ic"><x-icon name="Globe"></x-icon></div><div class="feat-text"><h3>Accessible in your browser</h3><p>No account or installation. A web client talks to the mission API.</p></div></div>
+<div class="feat rise" style="--i:3"><div class="ic"><x-icon name="Book"></x-icon></div><div class="feat-text"><h3>Mission command center</h3><p>Track four resources, crew health, station modules and science.</p></div></div>
+<div class="feat rise" style="--i:4"><div class="ic"><x-icon name="Activity"></x-icon></div><div class="feat-text"><h3>Replay and improve</h3><p>Two difficulty levels, event choices and JSON mission logs.</p></div></div>
+</div>
+</div>
+<div class="foot"><p>ASTRA SYSTEMS · NASA SPACE APPS · DNIPRO 2026</p><p>04 / 07</p></div>
+<aside>Визуализация проекта + пользовательский опыт. Скриншоты рабочего прототипа (desktop и телефон). Интерфейс игры на украинском (коммит 8bdd6f1). Все скриншоты — в папке screenshots/.</aside>
+</section>
+<section id="data" data-transition="fade" style="background:linear-gradient(rgba(11,16,38,0.62),rgba(11,16,38,0.62)),url(assets/bg-nebula.jpg) center/cover">
+<div class="head rise" style="--i:0">
+<p class="eyebrow">04 // NASA SCIENCE</p>
+<h2>Science-inspired scenarios, clearly labeled</h2>
+</div>
+<table class="data-table rise" style="--i:1">
+<tr><th style="width:24%">Current scenario</th><th style="width:40%">Scientific context</th><th style="width:36%">Status in the game</th></tr>
+<tr><td>Solar storm</td><td>Charged particles and lunar radiation risk</td><td>Playable event: shield or shelter</td></tr>
+<tr><td>Air leak</td><td>Habitat pressure and oxygen safety</td><td>Playable event: repair or isolate</td></tr>
+<tr><td>Possible lunar ice</td><td>Water ice in permanently shadowed regions</td><td>Playable event: explore or scan</td></tr>
+<tr><td>Station systems</td><td>Solar power and life-support trade-offs</td><td>Upgradable modules and daily forecast</td></tr>
+<tr><td>Science progress</td><td>Research, mission goals and crew decisions</td><td>7 days; target: 60 science points</td></tr>
+</table>
+<p class="note rise" style="--i:2">Current events and resource values are educational simulations, not live NASA feeds.<br>References: NASA DONKI (space weather) · NASA OSDR &amp; RadLab (crew health, radiation) · NASA Moon Trek (lunar poles) · CSA (food in space)</p>
+<div class="foot"><p>ASTRA SYSTEMS · NASA SPACE APPS · DNIPRO 2026</p><p>05 / 07</p></div>
+<aside>Честно: в коде пока нет живых данных NASA (README игры: «условная учебная модель»). Уроки в событиях основаны на научных фактах; колонка источников — к чему привязываем факты и что подключим. Если успеем подключить DONKI через apps/api — переписать нижнюю строку.</aside>
+</section>
+<section id="crew" class="light" data-transition="fade">
+<div class="head rise" style="--i:0">
+<p class="eyebrow">05 // CREW</p>
+<h2>Meet the crew</h2>
+<p style="font-size:24px;color:#46507A;margin-top:8px">Students of the Applied Rocket-and-Space Engineering College, Dnipro · web development, UI/UX, game mechanics, NASA open data</p>
+</div>
+<div class="crew-row">
+<div class="member rise" style="--i:1"><div class="avatar" style="padding:0;overflow:hidden"><img src="assets/team-olexii.jpg" alt="Olexii Tkachov" style="width:100%;height:100%;object-fit:cover"></div><p class="name">Olexii Tkachov</p><p class="role">Team lead<br>developer<br>playboy<br>filantrop<br>buisness man<br>DNIPRO FOREVER</p></div>
+<div class="member rise" style="--i:2"><div class="avatar" style="padding:0;overflow:hidden"><img src="assets/team-vladislav.jpg" alt="Vladislav Shatohin" style="width:100%;height:100%;object-fit:cover"></div><p class="name">Vladislav Shatohin</p><p class="role">Software engineer</p></div>
+<div class="member rise" style="--i:3"><div class="avatar" style="padding:0;overflow:hidden"><img src="assets/team-yelizaveta.jpg" alt="Yelizaveta Lebidieva" style="width:100%;height:100%;object-fit:cover"></div><p class="name">Yelizaveta Lebidieva</p><p class="role">Graphic designer</p></div>
+<div class="member rise" style="--i:4"><div class="avatar" style="padding:0;overflow:hidden"><img src="assets/team-kirilo.jpg" alt="Kirilo Sidoruk" style="width:100%;height:100%;object-fit:cover"></div><p class="name">Kirilo Sidoruk</p><p class="role">Presentation designer</p></div>
+<div class="member rise" style="--i:5"><div class="avatar" style="padding:0;overflow:hidden"><img src="assets/team-tetiana.jpg" alt="Tetiana Mandryka" style="width:100%;height:100%;object-fit:cover"></div><p class="name">Tetiana Mandryka</p><p class="role">Presentation designer assistant</p></div>
+</div>
+<div class="foot"><p>ASTRA SYSTEMS · NASA SPACE APPS · DNIPRO 2026</p><p>06 / 07</p></div>
+<aside>Команда Astra Systems (страница команды на spaceappschallenge.org): Олексій Ткачов — лид, Владислав Шатохін, Єлизавета Лебідєва, Кирило Сидорук, Тетяна Мандрика. Стек: TypeScript, React, NestJS.</aside>
+</section>
+<section id="next" style="background:linear-gradient(rgba(11,16,38,0.62),rgba(11,16,38,0.62)),url(assets/bg-nebula.jpg) center/cover">
+<svg class="stars" aria-label="Starfield with a small Moon" width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="mars2" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#F6F8FC"/><stop offset="0.45" stop-color="#A8AFC4"/><stop offset="1" stop-color="#2C324A"/></radialGradient></defs>
+<circle cx="1760" cy="150" r="200" fill="url(#mars2)"/>
+</svg>
+<div class="head rise" style="--i:0">
+<p class="eyebrow">06 // NEXT MISSION</p>
+<h2>Our next steps</h2>
+</div>
+<div class="plans">
+<div class="plan rise" style="--i:1"><p class="tag">TEST</p><p class="body">Run classroom playtests with students and teachers; gather feedback on clarity and difficulty.</p></div>
+<div class="plan rise" style="--i:2"><p class="tag">UPGRADE</p><p class="body">Expand mission scenarios and add sourced NASA datasets (DONKI first) with in-game credits.</p></div>
+<div class="plan rise" style="--i:3"><p class="tag">IMPLEMENT</p><p class="body">An English interface, a teacher-friendly classroom mode and better mobile accessibility.</p></div>
+</div>
+<div class="thanks rise" style="--i:4">
+<h2>Thanks for listening!</h2>
+<p class="sources">Astra Systems · Project: github.com/aleexxeyy/lunar-ops · Current events use simulated data</p>
+</div>
+<div class="foot"><p>ASTRA SYSTEMS · github.com/aleexxeyy/lunar-ops</p><p>07 / 07</p></div>
+<aside>Планы (Test / Upgrade / Implement, как в прошлой презентации), источники и благодарность. Лимит мануала: максимум 7 слайдов на английском — это последний.</aside>
+</section>
+</div>
+<script>
+  function fit() { document.querySelector('.deck').style.zoom = Math.min(1, (window.innerWidth - 32) / 1920); }
+  window.addEventListener('resize', fit); fit();
+</script>
+</body>
+</html>
