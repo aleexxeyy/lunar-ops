@@ -4,7 +4,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://lunar-ops.vercel.app/api/:path*"
+      "destination": "https://lunar-ops-omega.vercel.app/api/:path*"
     }
   ]
 }
